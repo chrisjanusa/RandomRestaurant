@@ -27,7 +27,7 @@ Please feel free to submit a pull request if you have any improvements or sugges
 Building is quite simple with gradle:
 
 ```shell
-git clone 
-cd random-restaurant-generator/
+git clone https://github.com/miamiheat710/RandomRestaurant.git
+cd RandomRestaurant/
 ./gradlew build
 ```
