@@ -29,7 +29,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -39,9 +42,11 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.chris.randomrestaurantgenerator.BuildConfig;
 import com.chris.randomrestaurantgenerator.MainActivity;
 import com.chris.randomrestaurantgenerator.R;
+import com.chris.randomrestaurantgenerator.db.RestaurantDBHelper;
 import com.chris.randomrestaurantgenerator.managers.UnscrollableLinearLayoutManager;
 import com.chris.randomrestaurantgenerator.models.Restaurant;
 import com.chris.randomrestaurantgenerator.utils.LocationProviderHelper;
+import com.chris.randomrestaurantgenerator.utils.SavedListHolder;
 import com.chris.randomrestaurantgenerator.utils.TypeOfError;
 import com.chris.randomrestaurantgenerator.views.MainRestaurantCardAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -124,7 +129,9 @@ public class MainActivityFragment extends Fragment implements
     Context context = getContext();
     DislikeListHolder dislikeListHolder = DislikeListHolder.getInstance();
     DislikeRestaurantDBHelper dislikedbHelper = new DislikeRestaurantDBHelper(context, null);
-
+    RadioButton favSwitch;
+    RadioGroup radioGroup;
+    boolean favBool;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,6 +144,8 @@ public class MainActivityFragment extends Fragment implements
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
         restaurantView = (RecyclerView) rootLayout.findViewById(R.id.restaurantView);
         restaurantView.setLayoutManager(new UnscrollableLinearLayoutManager(getContext()));
+
+
 
         mapCardContainer = (LinearLayout) rootLayout.findViewById(R.id.cardMapLayout);
         mapView = (MapView) rootLayout.findViewById(R.id.mapView);
@@ -153,6 +162,7 @@ public class MainActivityFragment extends Fragment implements
         pickTime = (ToggleButton) rootLayout.findViewById(R.id.pickTime);
         generate = (Button) rootLayout.findViewById(R.id.generate);
 
+        radioGroup = (RadioGroup) rootLayout.findViewById(R.id.radioFav);
         generateBtnColor = Color.parseColor("#1fb2a3");
 
         // Yelp API access token
@@ -186,6 +196,19 @@ public class MainActivityFragment extends Fragment implements
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(restaurantView);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                if(checkedId == 0 ){
+                    favBool = false;
+                }
+                else
+                    favBool = true;
+            }
+        });
 
         return rootLayout;
     }
@@ -281,6 +304,27 @@ public class MainActivityFragment extends Fragment implements
             @Override
             public void onClick(View v) {
 
+                SavedListHolder savedListHolder;
+                RestaurantDBHelper saveddbHelper = new RestaurantDBHelper(getContext(), null);
+                savedListHolder = SavedListHolder.getInstance();
+                savedListHolder.setSavedList(saveddbHelper.getAll());
+                if(favBool){
+                    Toast.makeText(getActivity(), R.string.string_task_running_msg, Toast.LENGTH_SHORT).show();
+                    Restaurant current = savedListHolder.getRandom();
+                    if (mainRestaurantCardAdapter == null) {
+                        mainRestaurantCardAdapter = new MainRestaurantCardAdapter(getContext(), current);
+                        restaurantView.setAdapter(mainRestaurantCardAdapter);
+                    }
+
+                    // These calls notify the RecyclerView that the data set has changed and we need to refresh.
+                    mainRestaurantCardAdapter.remove();
+                    mainRestaurantCardAdapter.add(current);
+
+                    showNormalLayout();
+                    updateMapWithRestaurant(current);
+                    enableGenerateButton();
+                    return;
+                }
                 /**
                  * If the user doesn't wait on the task to complete, warn them it is still running
                  * so we can prevent a long stack of requests from piling up.
@@ -930,6 +974,8 @@ public class MainActivityFragment extends Fragment implements
                 restaurants.clear();
                 restartQuery = false;
             }
+
+
             DislikeListHolder dislikeListHolder;
             DislikeRestaurantDBHelper dbHelper = new DislikeRestaurantDBHelper(getContext(), null);
             dislikeListHolder = DislikeListHolder.getInstance();
@@ -948,12 +994,9 @@ public class MainActivityFragment extends Fragment implements
                 chosenRestaurant = null;
                 do {
                     chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                    restaurants.remove(chosenRestaurant);
                 } while(dislikeListHolder.resIsContained(chosenRestaurant));
-                restaurants.remove(chosenRestaurant);
             }
-
-
-            // Return randomly chosen restaurant.
             return chosenRestaurant;
         }
 

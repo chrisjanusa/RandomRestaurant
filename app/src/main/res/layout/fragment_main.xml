@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_6sdp"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_6sdp"
         android:orientation="vertical"
@@ -28,8 +28,8 @@
             android:gravity="center"
             android:text="Categories"
             android:layout_gravity="left"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#ffffff"
             android:background="#1fb2a3"/>
@@ -38,9 +38,9 @@
             android:id="@+id/tilUserFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_35sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:layout_weight=".5"
-            android:layout_marginTop="@dimen/_8sdp">
+            android:layout_marginTop="@dimen/_5sdp">
 
             <EditText
                 android:id="@+id/filterBox"
@@ -52,7 +52,7 @@
                 android:hint="@string/filter_hint"
                 android:imeOptions="actionDone"
                 android:inputType="textWebEditText"
-                android:paddingBottom="30dp"
+                android:paddingBottom="@dimen/_15sdp"
                 android:maxLines="1"
                 android:textSize="@dimen/_12sdp" />
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:gravity="center"
-            android:paddingTop="5dp"
+            android:paddingTop="@dimen/_5sdp"
             android:text="Price Range"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#ffffff"
@@ -76,7 +76,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_8sdp"
 android:layout_weight=".5"
-            android:paddingBottom="@dimen/_35sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:orientation="horizontal">
 
             <CheckBox
@@ -111,9 +111,9 @@ android:layout_weight=".5"
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
+            android:paddingBottom="@dimen/_5sdp"
             android:gravity="center"
-            android:paddingTop="5dp"
+            android:paddingTop="@dimen/_5sdp"
             android:text="Time"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#ffffff"
@@ -129,6 +129,40 @@ android:layout_weight=".5"
             android:text="@string/string_open_at"
             android:textColor="#ffffff"
             android:textOff="@string/string_any_time" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_5sdp"
+            android:gravity="center"
+            android:paddingTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="Search Just Favorites"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#ffffff"
+            android:background="#1fb2a3"/>
+        <RadioGroup
+            android:id="@+id/radioFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <RadioButton
+                android:id="@+id/Randomed"
+                android:textSize="@dimen/_20sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Random"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/Faved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:text="Just Favorites"
+                 />
+
+
+        </RadioGroup>
 
     </LinearLayout>
     <fr.castorflex.android.circularprogressbar.CircularProgressBar

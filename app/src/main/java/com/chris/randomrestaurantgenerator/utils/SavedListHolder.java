@@ -3,6 +3,7 @@ package com.chris.randomrestaurantgenerator.utils;
 import com.chris.randomrestaurantgenerator.models.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Singleton design pattern to hold one instance of our savedList throughout the application.
@@ -27,5 +28,9 @@ public class SavedListHolder {
 
     public void setSavedList(ArrayList<Restaurant> list) {
         savedList = list;
+    }
+
+    public Restaurant getRandom(){
+        return savedList.get(new Random().nextInt(savedList.size()));
     }
 }
