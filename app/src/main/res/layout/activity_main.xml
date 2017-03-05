@@ -28,7 +28,7 @@
             android:layout_height="@dimen/_44sdp">
             <ImageButton
                 android:background="#1fb2a3"
-                android:paddingLeft="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
