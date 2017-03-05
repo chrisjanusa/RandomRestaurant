@@ -308,8 +308,7 @@ public class MainActivityFragment extends Fragment implements
                 RestaurantDBHelper saveddbHelper = new RestaurantDBHelper(getContext(), null);
                 savedListHolder = SavedListHolder.getInstance();
                 savedListHolder.setSavedList(saveddbHelper.getAll());
-                if(favBool){
-                    Toast.makeText(getActivity(), R.string.string_task_running_msg, Toast.LENGTH_SHORT).show();
+                if(favBool && ! savedListHolder.isEmpty()){
                     Restaurant current = savedListHolder.getRandom();
                     if (mainRestaurantCardAdapter == null) {
                         mainRestaurantCardAdapter = new MainRestaurantCardAdapter(getContext(), current);

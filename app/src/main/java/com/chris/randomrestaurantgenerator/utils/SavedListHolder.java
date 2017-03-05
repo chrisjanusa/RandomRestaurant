@@ -33,4 +33,9 @@ public class SavedListHolder {
     public Restaurant getRandom(){
         return savedList.get(new Random().nextInt(savedList.size()));
     }
+
+    public boolean isEmpty(){
+        return savedList.isEmpty();
+    }
+
 }

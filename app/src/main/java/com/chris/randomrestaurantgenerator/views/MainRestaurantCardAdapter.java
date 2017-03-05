@@ -173,11 +173,11 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
         holder.distancePriceReviewCount.setText(spannable);
 
         // Modify the save button depending on if the restaurant in the savedList or not.
-        if (restaurant.isSaved()) {
+        if (savedListHolder.getSavedList().contains(restaurant)) {
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
         } else
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
-        if (restaurant.isDislikeSaved()) {
+        if (dislikeListHolder.getSavedList().contains(restaurant)) {
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
         } else
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_down_black_24dp));
