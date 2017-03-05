@@ -76,7 +76,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
 
     public void removeDislike(Restaurant deleteThis) {
         new MainRestaurantCardAdapter.DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        deleteThis.setSaved(false);
+        deleteThis.setDislikeSaved(false);
         dislikeListHolder.getSavedList().remove(deleteThis);
     }
 
@@ -174,11 +174,13 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
 
         // Modify the save button depending on if the restaurant in the savedList or not.
         if (savedListHolder.getSavedList().contains(restaurant)) {
+            restaurant.setSaved(true);
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
         } else
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
         if (dislikeListHolder.getSavedList().contains(restaurant)) {
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
+            restaurant.setDislikeSaved(true);
         } else
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_down_black_24dp));
     }
@@ -222,6 +224,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
                             removeSaved(restaurant);
                             saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
                             Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
 
