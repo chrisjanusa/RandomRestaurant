@@ -66,7 +66,7 @@
     <ListView
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:paddingTop="150px"
+        android:paddingTop="25px"
         android:id="@+id/navList"
         android:layout_gravity="left|start"
         android:background="#ffeeeeee">

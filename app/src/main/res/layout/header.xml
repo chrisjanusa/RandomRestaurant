@@ -3,11 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <ImageView
         android:id="@+id/img_first"
         android:layout_width="fill_parent"
+
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        android:src="@drawable/thumb_down_filled" />
+        android:src="@drawable/chefmugdha" />
 
 </RelativeLayout>
