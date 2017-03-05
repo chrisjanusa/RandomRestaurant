@@ -930,7 +930,10 @@ public class MainActivityFragment extends Fragment implements
                 restaurants.clear();
                 restartQuery = false;
             }
-
+            DislikeListHolder dislikeListHolder;
+            DislikeRestaurantDBHelper dbHelper = new DislikeRestaurantDBHelper(getContext(), null);
+            dislikeListHolder = DislikeListHolder.getInstance();
+            dislikeListHolder.setSavedList(dbHelper.getAll());
             // Get restaurants only when the restaurants list is empty.
             Restaurant chosenRestaurant = null;
             if (restaurants == null || restaurants.isEmpty()) {
@@ -942,9 +945,13 @@ public class MainActivityFragment extends Fragment implements
                     restaurants.remove(chosenRestaurant);
                 }
             } else if (restaurants != null && !restaurants.isEmpty()) {
-                chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                chosenRestaurant = null;
+                do {
+                    chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                } while(dislikeListHolder.resIsContained(chosenRestaurant));
                 restaurants.remove(chosenRestaurant);
             }
+
 
             // Return randomly chosen restaurant.
             return chosenRestaurant;
