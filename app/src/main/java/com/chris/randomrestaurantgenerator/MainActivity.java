@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int position) {
         Intent intent;
         switch(position) {
-            case 0:
+            case 1:
                 intent = new Intent(this, SavedListActivity.class);
                 startActivity(intent);
                 break;
-            case 1:
+            case 2:
                 intent = new Intent(this, DislikeListActivity.class);
                 startActivity(intent);
                 break;
