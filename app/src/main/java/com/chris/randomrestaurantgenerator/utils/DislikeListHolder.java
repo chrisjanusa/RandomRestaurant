@@ -28,4 +28,13 @@ public class DislikeListHolder {
     public void setSavedList(ArrayList<Restaurant> list) {
         savedList = list;
     }
+
+    public boolean resIsContained(Restaurant res){
+        for(Restaurant res2: savedList){
+            if(res2.isSame(res)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

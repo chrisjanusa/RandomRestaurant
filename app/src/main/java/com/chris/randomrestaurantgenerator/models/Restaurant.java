@@ -180,4 +180,8 @@ public class Restaurant implements Parcelable {
             return this.url.equals(((Restaurant) o).url);
         else return super.equals(o);
     }
+
+    public boolean isSame(Restaurant res){
+        return (this.lat == res.getLat() && this.lon == res.getLon() && this.name.equals(res.getName()));
+    }
 }

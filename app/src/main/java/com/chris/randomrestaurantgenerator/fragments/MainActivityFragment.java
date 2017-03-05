@@ -3,6 +3,7 @@ package com.chris.randomrestaurantgenerator.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -77,11 +78,14 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import uk.co.deanwild.materialshowcaseview.shape.CircleShape;
 import uk.co.deanwild.materialshowcaseview.shape.RectangleShape;
-
+import com.chris.randomrestaurantgenerator.db.DislikeRestaurantDBHelper;
+import com.chris.randomrestaurantgenerator.models.Restaurant;
+import com.chris.randomrestaurantgenerator.utils.DislikeListHolder;
 /**
  * A fragment containing the main activity.
  * Responsible for displaying to the user a random restaurant based off their location  / zip code.
  */
+
 public class MainActivityFragment extends Fragment implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks,
@@ -117,6 +121,10 @@ public class MainActivityFragment extends Fragment implements
     String filterQuery = "";
     String searchQuery = "";
     ToggleButton pickTime;
+    Context context = getContext();
+    DislikeListHolder dislikeListHolder = DislikeListHolder.getInstance();
+    DislikeRestaurantDBHelper dislikedbHelper = new DislikeRestaurantDBHelper(context, null);
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -144,7 +152,7 @@ public class MainActivityFragment extends Fragment implements
         priceFour = (CheckBox) rootLayout.findViewById(R.id.priceFour);
         pickTime = (ToggleButton) rootLayout.findViewById(R.id.pickTime);
         generate = (Button) rootLayout.findViewById(R.id.generate);
-        generateBtnColor = Color.parseColor("#F6511D");
+        generateBtnColor = Color.parseColor("#1fb2a3");
 
         // Yelp API access token
         accessToken = BuildConfig.API_ACCESS_TOKEN;
@@ -776,9 +784,16 @@ public class MainActivityFragment extends Fragment implements
                 imageUrl = "localhost";
 
             // Construct a new Restaurant object with all the info we gathered above and return it
-            return new Restaurant(obj.getString("name"), (float) obj.getDouble("rating"),
+            Restaurant res = new Restaurant(obj.getString("name"), (float) obj.getDouble("rating"),
                     imageUrl, obj.getInt("review_count"), obj.getString("url"),
                     categories, address, deals, price, distance, lat, lon);
+            /*dislikedbHelper.
+            dislikeListHolder.setSavedList(dislikedbHelper.getAll());
+            if(dislikeListHolder.resIsContained(res)){
+                Toast.makeText(context, "Matched Dislike list so rerunning", Toast.LENGTH_SHORT).show();
+                generate.performClick();
+            }*/
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("RRG", "error in convertJSONToRestaurant: " + e.getMessage());

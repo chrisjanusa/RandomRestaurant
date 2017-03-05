@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F6511D</color>
-    <color name="colorPrimaryDark">#C93405</color>
+    <color name="colorPrimary">#1fb2a3</color>
+    <color name="colorPrimaryDark">#1fb2a3</color>
     <color name="colorAccent">#00A6ED</color>
     <color name="black">#000000</color>
 
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
-    <color name="gplus_color_4">#b23424</color>
+    <color name="gplus_color_4">#1fb2a3</color>
 
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>

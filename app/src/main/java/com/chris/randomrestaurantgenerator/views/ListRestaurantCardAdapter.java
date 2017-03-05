@@ -130,6 +130,8 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
 
     @Override
     public void onBindViewHolder(RestaurantViewHolder holder, int position) {
+        savedListHolder.setSavedList(dbHelper.getAll());
+        dislikeListHolder.setSavedList(dislikedbHelper.getAll());
 
         Restaurant restaurant = savedListHolder.getSavedList().get(position);
         holder.index.setText(String.valueOf(position));
@@ -184,11 +186,11 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
 
         holder.distancePriceReviewCount.setText(spannable);
 
-        if (restaurant.isSaved()) {
+        if (savedListHolder.getSavedList().contains(restaurant)) {
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
         } else
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
-        if (restaurant.isDislikeSaved()) {
+        if (dislikeListHolder.getSavedList().contains(restaurant)) {
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
         } else
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_down_black_24dp));

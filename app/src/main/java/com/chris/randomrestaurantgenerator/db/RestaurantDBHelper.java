@@ -109,7 +109,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = null;
         try {
-             cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
+            cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
 
             if (cursor.moveToFirst()) {
 

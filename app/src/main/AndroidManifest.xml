@@ -37,6 +37,12 @@
         </activity>
 
         <activity
+            android:name=".DislikeListActivity"
+            android:label="Dislike List"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".AboutActivity"
             android:label="About"
             android:screenOrientation="portrait">

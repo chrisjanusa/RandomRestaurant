@@ -162,8 +162,6 @@ public class DislikeListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             emptyListView.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            ((CircularProgressDrawable) progressBar.getIndeterminateDrawable()).start();
             super.onPreExecute();
         }
 
@@ -180,8 +178,6 @@ public class DislikeListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            progressBar.progressiveStop();
-            progressBar.setVisibility(View.GONE);
 
             if (!dislikeListHolder.getSavedList().isEmpty())
                 showRestaurants();

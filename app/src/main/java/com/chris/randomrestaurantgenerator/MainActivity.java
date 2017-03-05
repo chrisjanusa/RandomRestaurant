@@ -1,6 +1,7 @@
 package com.chris.randomrestaurantgenerator;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.chris.randomrestaurantgenerator.fragments.MainActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
+    private ListView images;
     private ArrayAdapter<String> mAdapter;
 
     @Override
@@ -25,12 +30,53 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mDrawerList = (ListView)findViewById(R.id.navList);
         addDrawerItems();
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
     private void addDrawerItems(){
-        String[] osArray = {"Likes", "Dislikes", "Settings"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+
+        String[] thing = {"Likes","Dislikes", "Filters"};
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, thing);
+
         mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                selectItem(position);
+            }
+        });
+    }
+
+    private  class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                long arg3) {
+            // TODO Auto-generated method stub
+            selectItem(arg2);
+
+        }
+
+    }
+
+    private void selectItem(int position) {
+        Intent intent;
+        switch(position) {
+            case 0:
+                intent = new Intent(this, SavedListActivity.class);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(this, DislikeListActivity.class);
+                startActivity(intent);
+                break;
+            /*case 2:
+                //Intent b = new Intent(MainActivity.this, Activity2.class);
+                //startActivity(b);
+                break;*/
+            default:
+        }
     }
 
     @Override
