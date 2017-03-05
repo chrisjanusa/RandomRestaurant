@@ -24,6 +24,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginBottom="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                />
             <com.arlib.floatingsearchview.FloatingSearchView
                 android:id="@+id/searchBox"
                 android:layout_width="match_parent"
@@ -57,6 +66,7 @@
     <ListView
         android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:paddingTop="150px"
         android:id="@+id/navList"
         android:layout_gravity="left|start"
         android:background="#ffeeeeee">

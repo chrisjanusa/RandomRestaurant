@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = (ListView)findViewById(R.id.navList);
         addDrawerItems();
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        View header = getLayoutInflater().inflate(R.layout.header, null);
+        mDrawerList.addHeaderView(header);
     }
 
     private void addDrawerItems(){
