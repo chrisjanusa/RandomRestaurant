@@ -1,8 +1,4 @@
-# Random Restaurant Generator 
 
-<a href="https://play.google.com/store/apps/details?id=com.chris.randomrestaurantgenerator">
-<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" />
-</a>
 
 It uses the [Yelp API](https://www.yelp.com/developers) to query for restaurants and uses [Google Play Services location API](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary). It also uses [Google Maps Android API](https://developers.google.com/maps/documentation/android-api/) for displaying the location of a restaurant.
 
@@ -20,6 +16,7 @@ Features:
  - Save restaurants to access them later if you want to narrow down your choices.
  - Ability to open the restaurant's page in Yelp for more information.
  - Displays a mini Google Maps to show where the restaurant is and to get quick directions to it.
+ - Ability to ban restaurants fom showing up.
  
 ## Contributing
 
@@ -30,7 +27,7 @@ Please feel free to submit a pull request if you have any improvements or sugges
 Building is quite simple with gradle:
 
 ```shell
-git clone https://github.com/christarazi/random-restaurant-generator.git
-cd random-restaurant-generator/
+git clone https://github.com/miamiheat710/RandomRestaurant.git
+cd RandomRestaurant/
 ./gradlew build
 ```
