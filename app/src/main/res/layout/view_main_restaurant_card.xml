@@ -80,17 +80,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageButton
-            android:id="@+id/removeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/imageHolder"
-            android:layout_toLeftOf="@+id/saveButton"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_down_black_24dp" />
-
-        <ImageButton
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +89,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_up_black_24dp" />
+            android:src="@drawable/bookmark_outline_plus" />
 
     </RelativeLayout>
 

@@ -78,33 +78,7 @@
             android:layout_toRightOf="@+id/listImageHolder"
             android:paddingLeft="@dimen/_4sdp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-        <ImageButton
-            android:id="@+id/removeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/listImageHolder"
-            android:layout_toLeftOf="@+id/saveButton"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_down_black_24dp" />
 
-        <ImageButton
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/listImageHolder"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_up_black_24dp" />
-        <TextView
-            android:id="@+id/index"
-            android:text="0"
-            android:layout_width="0px"
-            android:layout_height="0px" />
 
     </RelativeLayout>
 
