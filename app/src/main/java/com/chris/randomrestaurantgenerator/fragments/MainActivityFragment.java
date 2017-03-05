@@ -1015,9 +1015,6 @@ public class MainActivityFragment extends Fragment implements
             sequence.addSequenceItem(buildShowcaseView(restaurantView, new RectangleShape(0, 0),
                     "Swipe left to dismiss. Swipe right to open in Yelp. Tap bookmark button to save it for later."));
 
-            sequence.addSequenceItem(buildShowcaseView(((MainActivity) getActivity()).getMenuItemView(R.id.action_saved_list),
-                    new CircleShape(), "Tap here to view your saved list."));
-
             sequence.start();
         }
     }
