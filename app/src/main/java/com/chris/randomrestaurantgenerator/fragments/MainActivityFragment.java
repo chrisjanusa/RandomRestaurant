@@ -152,6 +152,7 @@ public class MainActivityFragment extends Fragment implements
         priceFour = (CheckBox) rootLayout.findViewById(R.id.priceFour);
         pickTime = (ToggleButton) rootLayout.findViewById(R.id.pickTime);
         generate = (Button) rootLayout.findViewById(R.id.generate);
+
         generateBtnColor = Color.parseColor("#1fb2a3");
 
         // Yelp API access token

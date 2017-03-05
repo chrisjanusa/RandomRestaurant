@@ -129,19 +129,19 @@
         app:cpb_stroke_width="4dp"
         app:cpb_sweep_speed="1.0" />
 
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/generate"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="#1fb2a3"
-        android:padding="0dp"
         android:text="@string/string_button_text_generate"
         android:textColor="#FFFFFF"
-        android:textSize="@dimen/_16sdp" />
+        android:textSize="@dimen/_16sdp"
+        android:background="#1fb2a3"/>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/restaurantView"
