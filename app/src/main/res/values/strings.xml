@@ -30,5 +30,6 @@
     <string name="string_open_at_time">Open at time</string>
     <string name="string_open_at">Open At</string>
     <string name="string_any_time">Any time</string>
-
+    <string name="drawer_open">opening</string>
+    <string name="drawer_close">closing</string>
 </resources>

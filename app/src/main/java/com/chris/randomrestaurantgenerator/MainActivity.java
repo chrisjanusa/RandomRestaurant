@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,7 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
     private ListView images;
+    private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ImageButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         View header = getLayoutInflater().inflate(R.layout.header, null);
         mDrawerList.addHeaderView(header);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        button = (ImageButton)findViewById(R.id.imageButton);
+        button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+            });
+
     }
 
     private void addDrawerItems(){
@@ -48,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 selectItem(position);
             }
         });
+
     }
 
     private  class DrawerItemClickListener implements ListView.OnItemClickListener {
