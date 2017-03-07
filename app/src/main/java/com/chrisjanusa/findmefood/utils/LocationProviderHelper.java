@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.chrisjanusa.findmefood.R;
@@ -88,7 +87,6 @@ public class LocationProviderHelper implements LocationListener,
         if (location.hasAccuracy() && location.getAccuracy() < 200.0) {
             mCurrentLocation = location;
             progressDialog.dismiss();
-            Log.d("RRG", "onLocationChanged: " + location.getAccuracy() + "m");
             searchLocationBox.setSearchText(activity.getString(R.string.string_current_location));
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleClient, this);
         }
@@ -125,13 +123,11 @@ public class LocationProviderHelper implements LocationListener,
 
     // Called by EasyPermissions from MainActivityFragment
     public void onPermissionsGranted(int requestCode, List<String> perms) {
-        Log.d("RRG", "onPermissionsGranted:" + requestCode + ":" + perms.size());
         requestLocation();
     }
 
     // Called by EasyPermissions from MainActivityFragment
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Log.d("RRG", "onPermissionsDenied:" + requestCode + ":" + perms.size());
 
         // (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
         // This will display a dialog directing them to enable the permission in app settings.
@@ -159,13 +155,11 @@ public class LocationProviderHelper implements LocationListener,
         if (EasyPermissions.hasPermissions(activity, PERMISSIONS)) {
 
             try {
-                Log.d("RRG", "Starting location updates...");
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleClient, mLocationRequest, this);
 
                 if (mLastLocation == null) {
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleClient);
-                    Log.d("RRG", "Reusing last location");
                 }
 
                 // Make sure mLastLocation is not null because getLastLocation() may return null.
@@ -203,7 +197,6 @@ public class LocationProviderHelper implements LocationListener,
 
         if (mCurrentLocation != null) {
             mLastLocation = mCurrentLocation;
-            Log.d("RRG", "Saved location on pause");
         }
     }
 

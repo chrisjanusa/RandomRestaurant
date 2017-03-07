@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.TimePicker;
 
 import java.text.ParseException;
@@ -56,15 +55,12 @@ public class TimePickerFragment extends DialogFragment
 
         Date date;
         try {
-            Log.d("RRG", "onTimeSet: " + String.format("%02d/%02d/%04d %02d:%02d:00",
-                    month, day, year, hourOfDay, minute));
 
             date = df.parse(String.format(Locale.US, "%02d/%02d/%04d %02d:%02d:00",
                     month, day, year, hourOfDay, minute));
 
             listener.timePickerDataCallback(date.getTime() / 1000);
 
-            Log.d("RRG", "onTimeSet: " + date.getTime() / 1000);
         } catch (ParseException e) {
             e.printStackTrace();
         }
