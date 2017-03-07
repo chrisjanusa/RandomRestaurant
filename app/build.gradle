@@ -17,13 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // http://programmers.stackexchange.com/a/285309
-            buildConfigField("String", "API_ACCESS_TOKEN", "\"" + "9d1ugKsHNu2FwjWshce7ax6BTAcBAJ2xwxWaUOUyR88SVvJgkUjcLms62R725UjPnv1CEolpdN-BuBo02vpalRLiV24QNzS1Tm-fJ7SzZw8qydisUy209xjR1wm7WHYx"+ "\"")
+            buildConfigField("String", "API_ACCESS_TOKEN", "\"" + TOKEN+ "\"")
         }
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField("String", "API_ACCESS_TOKEN", "\"" + "9d1ugKsHNu2FwjWshce7ax6BTAcBAJ2xwxWaUOUyR88SVvJgkUjcLms62R725UjPnv1CEolpdN-BuBo02vpalRLiV24QNzS1Tm-fJ7SzZw8qydisUy209xjR1wm7WHYx" + "\"")
+            buildConfigField("String", "API_ACCESS_TOKEN", "\"" + TOKEN + "\"")
         }
     }
 }

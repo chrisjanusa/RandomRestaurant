@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.chris.randomrestaurantgenerator">
+    package="com.chrisjanusa.findmefood">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.chrisjanusa.findmefood.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -31,13 +31,13 @@
         </activity>
 
         <activity
-            android:name=".SavedListActivity"
+            android:name="com.chrisjanusa.findmefood.SavedListActivity"
             android:label="Saved List"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".DislikeListActivity"
+            android:name="com.chrisjanusa.findmefood.DislikeListActivity"
             android:label="Dislike List"
             android:screenOrientation="portrait">
         </activity>
