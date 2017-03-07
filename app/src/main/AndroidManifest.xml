@@ -42,12 +42,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity
-            android:name=".AboutActivity"
-            android:label="About"
-            android:screenOrientation="portrait">
-        </activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCUSGv70XCjMwsb_dLtFqIpjtPdF9VpzdM"/>

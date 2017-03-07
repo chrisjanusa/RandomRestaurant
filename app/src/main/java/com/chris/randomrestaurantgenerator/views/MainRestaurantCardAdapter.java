@@ -178,12 +178,12 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
             restaurant.setSaved(true);
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
         } else
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
         if (dislikeListHolder.getSavedList().contains(restaurant)) {
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
             restaurant.setDislikeSaved(true);
         } else
-            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_down_black_24dp));
+            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
     }
 
     @Override
@@ -223,7 +223,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
                         if (r.equals(restaurant)) {
                             restaurant.setSaved(false);
                             removeSaved(restaurant);
-                            saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_up_black_24dp));
+                            saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
                             Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -245,7 +245,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
                         if (r.equals(restaurant)) {
                             restaurant.setDislikeSaved(false);
                             removeDislike(restaurant);
-                            removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_thumb_down_black_24dp));
+                            removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
                             Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
                             return;
                         }

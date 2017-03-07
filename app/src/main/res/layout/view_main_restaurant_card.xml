@@ -88,7 +88,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_down_black_24dp" />
+            android:src="@drawable/thumb_down_outline" />
 
         <ImageButton
             android:id="@+id/saveButton"
@@ -100,7 +100,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_thumb_up_black_24dp" />
+            android:src="@drawable/thumb_up_outline" />
 
     </RelativeLayout>
 
