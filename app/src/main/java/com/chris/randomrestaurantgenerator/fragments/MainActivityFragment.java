@@ -202,11 +202,11 @@ public class MainActivityFragment extends Fragment implements
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
-                if(checkedId == 0 ){
-                    favBool = false;
+                if(checkedId == R.id.radioFav ){
+                    favBool = true;
                 }
                 else
-                    favBool = true;
+                    favBool = false;
             }
         });
 
@@ -582,7 +582,7 @@ public class MainActivityFragment extends Fragment implements
     private void enableGenerateButton() {
         // Signal the task is finished
         taskRunning = false;
-        generate.setText(R.string.string_button_text_generate);
+        generate.setText("find me food");
         generate.setBackgroundColor(generateBtnColor);
         generate.setEnabled(true);
 

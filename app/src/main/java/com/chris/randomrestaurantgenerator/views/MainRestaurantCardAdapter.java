@@ -46,7 +46,8 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
         this.dbHelper = new RestaurantDBHelper(this.context, null);
         this.dislikeListHolder = DislikeListHolder.getInstance();
         this.dislikedbHelper = new DislikeRestaurantDBHelper(this.context, null);
-
+        savedListHolder.setSavedList(dbHelper.getAll());
+        dislikeListHolder.setSavedList(dislikedbHelper.getAll());
     }
 
     public void add(Restaurant res) {
