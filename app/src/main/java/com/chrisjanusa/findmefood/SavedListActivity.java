@@ -11,7 +11,7 @@ public class SavedListActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(com.chrisjanusa.findmefood.R.layout.activity_saved_list);
+        setContentView(com.chrisjanusa.RandomRestaurantPicker.R.layout.activity_saved_list);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.RandomRestaurantPicker.R;
 import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
 import com.chrisjanusa.findmefood.models.Restaurant;
 import com.chrisjanusa.findmefood.utils.DislikeListHolder;

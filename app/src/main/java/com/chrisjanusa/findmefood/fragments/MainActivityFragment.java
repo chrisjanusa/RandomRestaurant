@@ -37,8 +37,8 @@ import android.widget.ToggleButton;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.chrisjanusa.findmefood.BuildConfig;
-import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.RandomRestaurantPicker.BuildConfig;
+import com.chrisjanusa.RandomRestaurantPicker.R;
 import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
 import com.chrisjanusa.findmefood.managers.UnscrollableLinearLayoutManager;
 import com.chrisjanusa.findmefood.models.Restaurant;
@@ -405,7 +405,7 @@ public class MainActivityFragment extends Fragment implements
         sequence.addSequenceItem(buildShowcaseView(searchLocationBox, new RectangleShape(0, 0),
                 "Enter any zip code, city, or address here.\n\n" +
                         "Click the GPS icon to use your current location.\n\n" +
-                        "Tap the magnifying glass to see the filter options."
+                        "Tap the filter icon to see the filter options."
         ));
 
         sequence.start();
@@ -1060,7 +1060,7 @@ public class MainActivityFragment extends Fragment implements
             sequence.setConfig(config);
 
             sequence.addSequenceItem(buildShowcaseView(restaurantView, new RectangleShape(0, 0),
-                    "Swipe left to dismiss. Swipe right to open in Yelp. Tap bookmark button to save it for later."));
+                    "Swipe left to dismiss. Swipe right to open in Yelp. Tap like button to save it for later. Tap dislike button to never see it again."));
 
             sequence.start();
         }

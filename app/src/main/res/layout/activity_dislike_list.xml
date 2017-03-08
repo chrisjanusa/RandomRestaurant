@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/savedListFragment"
+        android:id="@+id/dislikeListFragment"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:name="com.chrisjanusa.findmefood.fragments.DislikeListFragment"

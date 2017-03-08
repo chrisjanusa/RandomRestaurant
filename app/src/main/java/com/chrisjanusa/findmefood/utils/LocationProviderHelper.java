@@ -8,7 +8,7 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
-import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.RandomRestaurantPicker.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;

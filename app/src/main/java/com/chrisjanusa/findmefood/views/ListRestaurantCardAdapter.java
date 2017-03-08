@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.RandomRestaurantPicker.R;
 import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
 import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
 import com.chrisjanusa.findmefood.models.Restaurant;
