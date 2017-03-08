@@ -574,7 +574,7 @@ public class MainActivityFragment extends Fragment implements
     private void enableGenerateButton() {
         // Signal the task is finished
         taskRunning = false;
-        generate.setText("find me food");
+        generate.setText("Pick Restaurant");
         generate.setBackgroundColor(generateBtnColor);
         generate.setEnabled(true);
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">findmefood</string>
+    <string name="app_name">Random Restaurant Picker</string>
     <string name="aboutText">Random Restaurant Generator is an open source Android application that picks a restaurant for you based on your location. The source code can be found below.</string>
     <string name="license">License: MIT</string>
     <string name="filter_hint">Categories e.g. vegan, sushi, bbq</string>

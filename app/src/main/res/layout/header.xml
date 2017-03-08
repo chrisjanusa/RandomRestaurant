@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/img_first"
         android:layout_width="fill_parent"
-
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:scaleType="fitXY"
-        android:src="@drawable/chefmugdha" />
+        android:src="@drawable/icon"
+        android:paddingBottom="@dimen/_5sdp"/>
 
 </RelativeLayout>
