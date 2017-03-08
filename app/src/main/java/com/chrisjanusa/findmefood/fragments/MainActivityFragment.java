@@ -28,7 +28,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -122,11 +121,9 @@ public class MainActivityFragment extends Fragment implements
     String searchQuery = "";
     ToggleButton pickTime;
     Context context = getContext();
-    DislikeListHolder dislikeListHolder = DislikeListHolder.getInstance();
-    DislikeRestaurantDBHelper dislikedbHelper = new DislikeRestaurantDBHelper(context, null);
-    RadioButton favSwitch;
     RadioGroup radioGroup;
     boolean favBool;
+    boolean located;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -140,7 +137,7 @@ public class MainActivityFragment extends Fragment implements
         restaurantView = (RecyclerView) rootLayout.findViewById(R.id.restaurantView);
         restaurantView.setLayoutManager(new UnscrollableLinearLayoutManager(getContext()));
 
-
+        located = false;
 
         mapCardContainer = (LinearLayout) rootLayout.findViewById(R.id.cardMapLayout);
         mapView = (MapView) rootLayout.findViewById(R.id.mapView);
@@ -239,7 +236,6 @@ public class MainActivityFragment extends Fragment implements
         }
         else{
             searchLocationBox.setSearchText("Current Location");
-            locationHelper.requestLocation();
         }
 
         // Define actions on menu button clicks inside searchLocationBox.
@@ -336,6 +332,10 @@ public class MainActivityFragment extends Fragment implements
                  * Initialize searchQuery and filterQuery if they're empty.
                  * Else set restartQuery to true if the queries have changed.
                  */
+                if(!located) {
+                    locationHelper.requestLocation();
+                    located = true;
+                }
                 if (searchQuery.isEmpty() && filterQuery.isEmpty()) {
                     searchQuery = searchLocationBox.getQuery();
                     filterQuery = filterBox.getText().toString();
@@ -354,12 +354,15 @@ public class MainActivityFragment extends Fragment implements
                 // Replace all spaces from filters for Yelp query.
                 String filterBoxText = filterBox.getText().toString().replaceAll(" ", "");
 
+
                 if (LocationProviderHelper.useGPS) {
                     /**
                      * Check to make sure the location is not null before starting.
                      * Else, begin the AsyncTask.
                      */
+
                     Location location = locationHelper.getLocation();
+
                     if (location == null) {
                         displayAlertDialog(R.string.string_location_not_found, "Error");
                     } else {
@@ -825,7 +828,6 @@ public class MainActivityFragment extends Fragment implements
             /*dislikedbHelper.
             dislikeListHolder.setSavedList(dislikedbHelper.getAll());
             if(dislikeListHolder.resIsContained(res)){
-                Toast.makeText(context, "Matched Dislike list so rerunning", Toast.LENGTH_SHORT).show();
                 generate.performClick();
             }*/
             return res;
