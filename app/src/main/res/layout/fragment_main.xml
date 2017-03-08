@@ -142,19 +142,19 @@ android:layout_weight=".5"
             android:textColor="#ffffff"
             android:background="#1fb2a3"/>
         <RadioGroup
-            android:id="@+id/radioFav"
+            android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
             <RadioButton
-                android:id="@+id/Randomed"
+                android:id="@+id/radioRandom"
                 android:textSize="@dimen/_20sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Random"
                 android:checked="true"/>
             <RadioButton
-                android:id="@+id/Faved"
+                android:id="@+id/radioFav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_20sdp"

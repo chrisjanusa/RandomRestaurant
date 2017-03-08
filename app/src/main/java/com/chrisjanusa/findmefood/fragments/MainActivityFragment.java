@@ -157,7 +157,7 @@ public class MainActivityFragment extends Fragment implements
         pickTime = (ToggleButton) rootLayout.findViewById(R.id.pickTime);
         generate = (Button) rootLayout.findViewById(R.id.generate);
 
-        radioGroup = (RadioGroup) rootLayout.findViewById(R.id.radioFav);
+        radioGroup = (RadioGroup) rootLayout.findViewById(R.id.radioGroup);
         generateBtnColor = Color.parseColor("#1fb2a3");
 
         // Yelp API access token
@@ -197,11 +197,12 @@ public class MainActivityFragment extends Fragment implements
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
-                if(checkedId == R.id.radioFav ){
+                if(checkedId == R.id.radioFav){
                     favBool = true;
                 }
-                else
+                else {
                     favBool = false;
+                }
             }
         });
 
@@ -306,7 +307,7 @@ public class MainActivityFragment extends Fragment implements
                 RestaurantDBHelper saveddbHelper = new RestaurantDBHelper(getContext(), null);
                 savedListHolder = SavedListHolder.getInstance();
                 savedListHolder.setSavedList(saveddbHelper.getAll());
-                if(favBool && ! savedListHolder.isEmpty()){
+                if(favBool && !savedListHolder.isEmpty()){
                     Restaurant current = savedListHolder.getRandom();
                     if (mainRestaurantCardAdapter == null) {
                         mainRestaurantCardAdapter = new MainRestaurantCardAdapter(getContext(), current);
