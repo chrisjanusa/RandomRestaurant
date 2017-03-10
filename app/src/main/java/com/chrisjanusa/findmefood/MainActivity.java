@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.chrisjanusa.RandomRestaurantPicker.R;
 import com.chrisjanusa.findmefood.fragments.MainActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,25 +24,28 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ImageButton button;
+    //private ImageButton button;
+    private FloatingSearchView searchLocationBox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(com.chrisjanusa.RandomRestaurantPicker.R.layout.activity_main);
+        searchLocationBox = (FloatingSearchView) findViewById(R.id.searchBox);
         mDrawerList = (ListView)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.navList);
         addDrawerItems();
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         View header = getLayoutInflater().inflate(com.chrisjanusa.RandomRestaurantPicker.R.layout.header, null);
         mDrawerList.addHeaderView(header);
         mDrawerLayout = (DrawerLayout) findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.drawer_layout);
-        button = (ImageButton)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.imageButton);
-        button.setOnClickListener(new View.OnClickListener(){
+        //button = (ImageButton)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.imageButton);
+        searchLocationBox.attachNavigationDrawerToMenuButton(mDrawerLayout);
+        /*button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 mDrawerLayout.openDrawer(Gravity.LEFT);
             }
-            });
+            });*/
 
     }
 
