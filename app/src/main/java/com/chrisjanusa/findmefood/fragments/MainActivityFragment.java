@@ -38,6 +38,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.chrisjanusa.RandomRestaurantPicker.BuildConfig;
 import com.chrisjanusa.RandomRestaurantPicker.R;
+import com.chrisjanusa.findmefood.db.HistoryDBHelper;
 import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
 import com.chrisjanusa.findmefood.managers.UnscrollableLinearLayoutManager;
 import com.chrisjanusa.findmefood.models.Restaurant;
@@ -124,6 +125,7 @@ public class MainActivityFragment extends Fragment implements
     RadioGroup radioGroup;
     boolean favBool;
     boolean located;
+    HistoryDBHelper historyDBHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +138,7 @@ public class MainActivityFragment extends Fragment implements
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
         restaurantView = (RecyclerView) rootLayout.findViewById(R.id.restaurantView);
         restaurantView.setLayoutManager(new UnscrollableLinearLayoutManager(getContext()));
+        historyDBHelper = new HistoryDBHelper(getContext(), null);
 
         located = false;
 
@@ -182,6 +185,7 @@ public class MainActivityFragment extends Fragment implements
                     // We don't want to remove the restaurant here, so we add it back to the restaurantView.
                     mainRestaurantCardAdapter.remove();
                     mainRestaurantCardAdapter.add(currentRestaurant);
+
                 }
             }
         };
@@ -324,7 +328,6 @@ public class MainActivityFragment extends Fragment implements
                  * so we can prevent a long stack of requests from piling up.
                  */
                 if (taskRunning) {
-                    Toast.makeText(getActivity(), R.string.string_task_running_msg, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -1050,6 +1053,7 @@ public class MainActivityFragment extends Fragment implements
             // These calls notify the RecyclerView that the data set has changed and we need to refresh.
             mainRestaurantCardAdapter.remove();
             mainRestaurantCardAdapter.add(currentRestaurant);
+            historyDBHelper.insert(currentRestaurant);
 
             showNormalLayout();
             updateMapWithRestaurant(currentRestaurant);

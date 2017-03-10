@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addDrawerItems(){
 
-        String[] thing = {"Likes","Dislikes"};
+        String[] thing = {"Likes","Dislikes","History"};
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, thing);
 
         mDrawerList.setAdapter(mAdapter);
@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, DislikeListActivity.class);
                 startActivity(intent);
                 break;
-            /*case 2:
-                //Intent b = new Intent(MainActivity.this, Activity2.class);
-                //startActivity(b);
-                break;*/
+            case 3:
+                intent = new Intent(this, HistoryListActivity.class);
+                startActivity(intent);
+                break;
             default:
         }
     }

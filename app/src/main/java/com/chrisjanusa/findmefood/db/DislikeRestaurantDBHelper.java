@@ -144,7 +144,7 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
                             cursor.getDouble(cursor.getColumnIndex(COLUMN_LON))
                     );
 
-                    restaurants.add(restaurant);
+                    restaurants.add(0, restaurant);
                     cursor.moveToNext();
                 }
             }
@@ -157,7 +157,7 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
             else
                 Log.d("RRG", "Cursor is null");
         }
-
+        database.close();
         return restaurants;
     }
 

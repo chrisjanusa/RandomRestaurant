@@ -34,8 +34,6 @@ public class Restaurant implements Parcelable {
     private double distance;
     private double lat;
     private double lon;
-    private boolean isSaved;
-    private boolean isDislikeSaved;
 
     public Restaurant(String name, float rating, String thumbnailURL, int reviewCount,
                       String url, ArrayList<String> categories, ArrayList<String> address,
@@ -127,21 +125,6 @@ public class Restaurant implements Parcelable {
         return lon;
     }
 
-    public boolean isSaved() {
-        return isSaved;
-    }
-
-    public void setSaved(boolean b) {
-        this.isSaved = b;
-    }
-
-    public boolean isDislikeSaved() {
-        return isDislikeSaved;
-    }
-
-    public void setDislikeSaved(boolean b) {
-        this.isDislikeSaved = b;
-    }
 
     @Override
     public int describeContents() {

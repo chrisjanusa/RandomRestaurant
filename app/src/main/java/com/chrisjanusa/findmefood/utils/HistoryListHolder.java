@@ -3,19 +3,20 @@ package com.chrisjanusa.findmefood.utils;
 import com.chrisjanusa.findmefood.models.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Singleton design pattern to hold one instance of our savedList throughout the application.
  */
-public class DislikeListHolder {
+public class HistoryListHolder {
 
-    private static DislikeListHolder instance = null;
+    private static HistoryListHolder instance = null;
     private static ArrayList<Restaurant> savedList;
 
-    public static DislikeListHolder getInstance() {
+    public static HistoryListHolder getInstance() {
         if (instance == null) {
             savedList = new ArrayList<>();
-            instance = new DislikeListHolder();
+            instance = new HistoryListHolder();
         }
 
         return instance;
@@ -29,14 +30,8 @@ public class DislikeListHolder {
         return savedList.get(index);
     }
 
-    public int clear(){
-        int size = this.size();
-        savedList.clear();
-        return size;
-    }
-
-    public int size() {
-        return savedList.size();
+    public void setSavedList(ArrayList<Restaurant> list) {
+        savedList = list;
     }
 
     public void add(Restaurant res){
@@ -47,8 +42,14 @@ public class DislikeListHolder {
         savedList.remove(res);
     }
 
-    public void setSavedList(ArrayList<Restaurant> list) {
-        savedList = list;
+    public int clear(){
+        int size = this.size();
+        savedList.clear();
+        return size;
+    }
+
+    public int size() {
+        return savedList.size();
     }
 
     public boolean resIsContained(Restaurant res){
@@ -59,4 +60,9 @@ public class DislikeListHolder {
         }
         return false;
     }
+
+    public boolean isEmpty(){
+        return savedList.isEmpty();
+    }
+
 }

@@ -31,7 +31,7 @@
             app:cpb_max_sweep_angle="300"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:id="@+id/circularProgressBarDislikeList"
+            android:id="@+id/circularProgressBarHistoryList"
             android:visibility="gone"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/string_empty_dislike_list"
+            android:text="@string/string_empty_history_list"
             android:visibility="gone" />
 
     </RelativeLayout>

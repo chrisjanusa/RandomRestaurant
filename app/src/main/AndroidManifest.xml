@@ -32,13 +32,19 @@
 
         <activity
             android:name="com.chrisjanusa.findmefood.SavedListActivity"
-            android:label="Saved List"
+            android:label="Liked List"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="com.chrisjanusa.findmefood.DislikeListActivity"
-            android:label="Dislike List"
+            android:label="Disliked List"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="com.chrisjanusa.findmefood.HistoryListActivity"
+            android:label="History"
             android:screenOrientation="portrait">
         </activity>
 

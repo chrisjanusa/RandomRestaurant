@@ -64,21 +64,26 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
      *
      * @param res: the restaurant object we want to add.
      */
-    private void addToSavedList(Restaurant res) { savedListHolder.getSavedList().add(res);
+    private void addToSavedList(Restaurant res) {
+        new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
+        savedListHolder.add(res);
+        Toast.makeText(context, "Restaurant added to like list", Toast.LENGTH_SHORT).show();
     }
     private void addToDislikeList(Restaurant res) {
-        dislikeListHolder.getSavedList().add(res);
+        new InsertIntoDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, restaurant);
+        dislikeListHolder.add(res);
+        Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
     }
     public void removeSaved(Restaurant deleteThis) {
         new MainRestaurantCardAdapter.DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        deleteThis.setSaved(false);
-        savedListHolder.getSavedList().remove(deleteThis);
+        savedListHolder.remove(deleteThis);
+        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
     }
 
     public void removeDislike(Restaurant deleteThis) {
         new MainRestaurantCardAdapter.DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        deleteThis.setDislikeSaved(false);
-        dislikeListHolder.getSavedList().remove(deleteThis);
+        dislikeListHolder.remove(deleteThis);
+        Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -174,16 +179,14 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
         holder.distancePriceReviewCount.setText(spannable);
 
         // Modify the save button depending on if the restaurant in the savedList or not.
-        if (savedListHolder.getSavedList().contains(restaurant)) {
-            restaurant.setSaved(true);
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
+        if (savedListHolder.resIsContained(restaurant)) {
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_filled));
         } else
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
-        if (dislikeListHolder.getSavedList().contains(restaurant)) {
-            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
-            restaurant.setDislikeSaved(true);
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_border_black_24dp));
+        if (dislikeListHolder.resIsContained(restaurant)) {
+            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_red));
         } else
-            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
+            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
     }
 
     @Override
@@ -219,44 +222,30 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (Restaurant r : savedListHolder.getSavedList()) {
-                        if (r.equals(restaurant)) {
-                            restaurant.setSaved(false);
-                            removeSaved(restaurant);
-                            saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
-                            Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                    if (savedListHolder.resIsContained(restaurant)) {
+                        removeSaved(restaurant);
+                        saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_border_black_24dp));
+                        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
+                        return;
                     }
 
-                    new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, restaurant);
-
                     addToSavedList(restaurant);
-                    restaurant.setSaved(true);
-                    saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
-                    Toast.makeText(context, "Restaurant added to like list.", Toast.LENGTH_SHORT).show();
+                    saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_filled));
                 }
             });
 
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (Restaurant r : dislikeListHolder.getSavedList()) {
-                        if (r.equals(restaurant)) {
-                            restaurant.setDislikeSaved(false);
-                            removeDislike(restaurant);
-                            removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
-                            Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+
+                    if (dislikeListHolder.resIsContained(restaurant)) {
+                        removeDislike(restaurant);
+                        removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
+                        return;
                     }
 
-                    new InsertIntoDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, restaurant);
-
                     addToDislikeList(restaurant);
-                    restaurant.setDislikeSaved(true);
-                    removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
-                    Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
+                    removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_red));
                 }
             });
         }

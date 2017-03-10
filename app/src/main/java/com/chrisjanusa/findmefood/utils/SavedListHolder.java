@@ -34,6 +34,37 @@ public class SavedListHolder {
         return savedList.get(new Random().nextInt(savedList.size()));
     }
 
+    public void add(Restaurant res){
+        savedList.add(0, res);
+    }
+
+    public void remove(Restaurant res){
+        savedList.remove(res);
+    }
+
+    public Restaurant get(int index){
+        return savedList.get(index);
+    }
+
+    public int clear(){
+        int size = size();
+        savedList.clear();
+        return size;
+    }
+
+    public int size() {
+        return savedList.size();
+    }
+
+    public boolean resIsContained(Restaurant res){
+        for(Restaurant res2: savedList){
+            if(res2.isSame(res)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isEmpty(){
         return savedList.isEmpty();
     }

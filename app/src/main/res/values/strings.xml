@@ -5,7 +5,9 @@
     <string name="filter_hint">Categories e.g. vegan, sushi, bbq</string>
     <string name="string_button_text_generate">findmefood</string>
     <string name="string_button_text_loading">LOADING…</string>
-    <string name="string_empty_saved_list">You don\'t have any restaurants saved.</string>
+    <string name="string_empty_saved_list">You have not liked any restaurants.</string>
+    <string name="string_empty_dislike_list">You have not disliked any restaurants.</string>
+    <string name="string_empty_history_list">You have not searched for any restaurants.</string>
     <string name="string_getting_location">Getting location…</string>
     <string name="string_current_location">Current Location</string>
     <string name="string_location_not_found">"Location has not been found yet. Please try again. Acquiring GPS signal may take up to a minute on some devices."</string>
