@@ -47,6 +47,9 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
         this.dbHelper = new RestaurantDBHelper(this.context, null);
         this.dislikeListHolder = DislikeListHolder.getInstance();
         this.dislikedbHelper = new DislikeRestaurantDBHelper(this.context, null);
+        savedListHolder.setSavedList(dbHelper.getAll());
+        dislikeListHolder.setSavedList(dislikedbHelper.getAll());
+
     }
 
     @Override
@@ -55,14 +58,13 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
 
         return new RestaurantViewHolder(view);
     }
-
     public void remove(int index) {
         Restaurant deleteThis = savedListHolder.get(index);
         new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        savedListHolder.remove(deleteThis);
-        notifyItemRemoved(index);
+        notifyItemRemoved(savedListHolder.remove(deleteThis));
         Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
     }
+
     private void addToSavedList(Restaurant res) {
         new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
         savedListHolder.add(res);
@@ -78,7 +80,6 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
         Restaurant deleteThis = savedListHolder.get(index);
         new DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
         dislikeListHolder.remove(deleteThis);
-        notifyItemRemoved(index);
         Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
     }
 
@@ -123,13 +124,8 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
     }
 
     @Override
-    public void onBindViewHolder(RestaurantViewHolder holder, int position) {
-        savedListHolder.setSavedList(dbHelper.getAll());
-        dislikeListHolder.setSavedList(dislikedbHelper.getAll());
-
-        Restaurant restaurant = savedListHolder.get(position);
-        holder.index.setText(String.valueOf(position));
-
+    public void onBindViewHolder(final RestaurantViewHolder holder, final int position) {
+        final Restaurant restaurant = savedListHolder.get(position);
         Picasso.with(context).load(restaurant.getThumbnailURL()).into(holder.thumbnail);
         holder.ratingImage.setImageResource(loadStars(restaurant.getRating()));
         holder.nameOfRestaurant.setText(restaurant.getName());
@@ -188,6 +184,34 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
         } else
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
+
+        holder.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (savedListHolder.resIsContained(restaurant)) {
+                    remove(position);
+                    holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
+                    return;
+                }
+
+                addToSavedList(restaurant);
+                holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
+            }
+        });
+
+        holder.removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dislikeListHolder.resIsContained(restaurant)) {
+                    removeDislike(position);
+                    holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
+                    return;
+                }
+
+                addToDislikeList(restaurant);
+                holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
+            }
+        });
     }
 
     @Override
@@ -203,7 +227,6 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
         TextView categories;
         TextView deals;
         TextView distancePriceReviewCount;
-        TextView index;
         ImageButton saveButton;
         ImageButton removeButton;
 
@@ -211,45 +234,13 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
             super(itemView);
 
             nameOfRestaurant = (TextView) itemView.findViewById(R.id.listName);
-            index = (TextView) itemView.findViewById(R.id.index);
-            final Restaurant restaurant = savedListHolder.get(Integer.parseInt(index.getText().toString()));
             ratingImage = (ImageView) itemView.findViewById(R.id.listRating);
             thumbnail = (ImageView) itemView.findViewById(R.id.listThumbnail);
             categories = (TextView) itemView.findViewById(R.id.listCategories);
             deals = (TextView) itemView.findViewById(R.id.listDeals);
             distancePriceReviewCount = (TextView) itemView.findViewById(R.id.listDistancePriceReviewCount);
-            index = (TextView) itemView.findViewById(R.id.index);
-
             removeButton = (ImageButton) itemView.findViewById(R.id.removeButton);
             saveButton = (ImageButton) itemView.findViewById(R.id.saveButton);
-
-            saveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (savedListHolder.resIsContained(restaurant)) {
-                        remove(Integer.parseInt(index.getText().toString()));
-                        saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
-                        return;
-                    }
-
-                    addToSavedList(restaurant);
-                    saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
-                }
-            });
-
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (dislikeListHolder.resIsContained(restaurant)) {
-                        removeDislike(Integer.parseInt(index.getText().toString()));
-                        removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
-                        return;
-                    }
-
-                    addToDislikeList(restaurant);
-                    removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
-                }
-            });
 
         }
     }

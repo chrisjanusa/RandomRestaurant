@@ -167,4 +167,8 @@ public class Restaurant implements Parcelable {
     public boolean isSame(Restaurant res){
         return (this.lat == res.getLat() && this.lon == res.getLon() && this.name.equals(res.getName()));
     }
+
+    public boolean isSame(String name){
+        return (this.name == name);
+    }
 }

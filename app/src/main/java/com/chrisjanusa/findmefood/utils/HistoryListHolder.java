@@ -1,5 +1,7 @@
 package com.chrisjanusa.findmefood.utils;
 
+import android.util.Log;
+
 import com.chrisjanusa.findmefood.models.Restaurant;
 
 import java.util.ArrayList;
@@ -26,6 +28,16 @@ public class HistoryListHolder {
         return savedList;
     }
 
+    public Restaurant get(String name){
+        for(Restaurant res: savedList){
+            Log.d("RNG", "name = " + name + " res1.name = " + res.getName());
+            if(res.isSame(name)){
+                return res;
+            }
+        }
+        return null;
+    }
+
     public Restaurant get(int index){
         return savedList.get(index);
     }
@@ -38,8 +50,10 @@ public class HistoryListHolder {
         savedList.add(0, res);
     }
 
-    public void remove(Restaurant res){
+    public int remove(Restaurant res){
+        int index = savedList.indexOf(res);
         savedList.remove(res);
+        return index;
     }
 
     public int clear(){

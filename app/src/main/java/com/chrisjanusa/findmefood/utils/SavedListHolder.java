@@ -38,8 +38,19 @@ public class SavedListHolder {
         savedList.add(0, res);
     }
 
-    public void remove(Restaurant res){
+    public int remove(Restaurant res){
+        int index = savedList.indexOf(res);
         savedList.remove(res);
+        return index;
+    }
+
+    public Restaurant get(String name){
+        for(Restaurant res: savedList){
+            if(res.isSame(name)){
+                return res;
+            }
+        }
+        return null;
     }
 
     public Restaurant get(int index){

@@ -75,7 +75,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         if(size>50){
             deleteFirst();
         }
-        size = getSize();
+        Log.d("RRG", "Size before insert or delete is " + size);
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_RESTNAME, res.getName());
@@ -117,7 +117,8 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Restaurant> getAll() {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
-
+        long size = getSize();
+        Log.d("RRG", "Size before getting all is " + size);
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = null;
         try {

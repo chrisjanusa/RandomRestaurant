@@ -100,11 +100,6 @@
             android:clickable="true"
             android:padding="@dimen/_4sdp"
             android:src="@drawable/thumb_up_outline" />
-        <TextView
-            android:id="@+id/index"
-            android:text="0"
-            android:layout_width="0px"
-            android:layout_height="0px" />
 
     </RelativeLayout>
 
