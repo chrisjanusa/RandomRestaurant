@@ -182,7 +182,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
         if (savedListHolder.resIsContained(restaurant)) {
             holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_filled));
         } else
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_border_black_24dp));
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
         if (dislikeListHolder.resIsContained(restaurant)) {
             holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_red));
         } else
@@ -224,7 +224,7 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
                 public void onClick(View v) {
                     if (savedListHolder.resIsContained(restaurant)) {
                         removeSaved(restaurant);
-                        saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_border_black_24dp));
+                        saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
                         Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
                         return;
                     }

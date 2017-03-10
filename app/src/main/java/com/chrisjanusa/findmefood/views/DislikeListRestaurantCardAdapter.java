@@ -175,25 +175,25 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
         holder.distancePriceReviewCount.setText(spannable);
 
         if (savedListHolder.resIsContained(restaurant)) {
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_filled));
         } else
-            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
+            holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
         if (dislikeListHolder.resIsContained(restaurant)) {
-            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
+            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_red));
         } else
-            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
+            holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
 
         holder.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (savedListHolder.resIsContained(restaurant)) {
                     removeSaved(position);
-                    holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline));
+                    holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
                     return;
                 }
 
                 addToSavedList(restaurant);
-                holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_up_filled));
+                holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_filled));
             }
         });
 
@@ -202,12 +202,12 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
             public void onClick(View v) {
                 if (dislikeListHolder.resIsContained(restaurant)) {
                     remove(position);
-                    holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_outline));
+                    holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
                     return;
                 }
 
                 addToDislikeList(restaurant);
-                holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.thumb_down_filled));
+                holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_red));
             }
         });
     }

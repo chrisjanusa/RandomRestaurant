@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addDrawerItems(){
 
-        String[] thing = {"Likes","Dislikes","History"};
+        String[] thing = {"Favorites","Blocked","History"};
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, thing);
 
         mDrawerList.setAdapter(mAdapter);

@@ -87,8 +87,7 @@
             android:layout_toLeftOf="@+id/saveButton"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/thumb_down_outline" />
+            android:src="@drawable/block_not" />
 
         <ImageButton
             android:id="@+id/saveButton"
@@ -99,8 +98,7 @@
             android:layout_alignParentRight="true"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/thumb_up_outline" />
+            android:src="@drawable/star_not" />
 
     </RelativeLayout>
 
