@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.chrisjanusa.findmefood.MainActivity"
+            android:name="com.chrisjanusa.randomrestaurantpicker.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -31,19 +31,19 @@
         </activity>
 
         <activity
-            android:name="com.chrisjanusa.findmefood.SavedListActivity"
+            android:name="com.chrisjanusa.randomrestaurantpicker.SavedListActivity"
             android:label="Liked List"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name="com.chrisjanusa.findmefood.DislikeListActivity"
+            android:name="com.chrisjanusa.randomrestaurantpicker.DislikeListActivity"
             android:label="Disliked List"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name="com.chrisjanusa.findmefood.HistoryListActivity"
+            android:name="com.chrisjanusa.randomrestaurantpicker.HistoryListActivity"
             android:label="History"
             android:screenOrientation="portrait">
         </activity>

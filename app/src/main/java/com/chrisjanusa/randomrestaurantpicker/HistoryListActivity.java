@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood;
+package com.chrisjanusa.randomrestaurantpicker;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;

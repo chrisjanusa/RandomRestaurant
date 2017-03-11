@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.fragments;
+package com.chrisjanusa.randomrestaurantpicker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,29 +19,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
-import com.chrisjanusa.findmefood.models.Restaurant;
-import com.chrisjanusa.findmefood.utils.SavedListHolder;
-import com.chrisjanusa.findmefood.views.ListRestaurantCardAdapter;
+import com.chrisjanusa.randomrestaurantpicker.db.HistoryDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.utils.HistoryListHolder;
+import com.chrisjanusa.randomrestaurantpicker.views.HistoryListRestaurantCardAdapter;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 /**
- * A fragment containing the SavedListActivity.
- * Responsible for displaying the restaurants the user has saved.
+ * A fragment containing the HistoryListActivity.
+ * Responsible for displaying the last 50 random restaurants generated for the user.
  */
-public class SavedListFragment extends Fragment {
+public class HistoryListFragment extends Fragment {
 
     LinearLayout rootLayout;
     RecyclerView listRecyclerView;
     TextView emptyListView;
     CircularProgressBar progressBar;
 
-    ListRestaurantCardAdapter listRestaurantCardAdapter;
+    HistoryListRestaurantCardAdapter historyRestaurantCardAdapter;
 
-    SavedListHolder savedListHolder;
-    RestaurantDBHelper dbHelper;
+    HistoryListHolder historyListHolder;
+    HistoryDBHelper dbHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,10 +51,10 @@ public class SavedListFragment extends Fragment {
         setHasOptionsMenu(true);
 
         if (savedInstanceState != null) {
-            savedListHolder.setSavedList(savedInstanceState.<Restaurant>getParcelableArrayList("savedList"));
+            historyListHolder.setSavedList(savedInstanceState.<Restaurant>getParcelableArrayList("historyList"));
         }
 
-        this.dbHelper = new RestaurantDBHelper(getContext(), null);
+        this.dbHelper = new HistoryDBHelper(getContext(), null);
     }
 
     @Override
@@ -62,13 +62,13 @@ public class SavedListFragment extends Fragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
-        savedListHolder = SavedListHolder.getInstance();
+        historyListHolder = HistoryListHolder.getInstance();
 
-        rootLayout = (LinearLayout) inflater.inflate(R.layout.fragment_saved_list, container, false);
+        rootLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history_list, container, false);
         listRecyclerView = (RecyclerView) rootLayout.findViewById(R.id.listRecyclerView);
         listRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         emptyListView = (TextView) rootLayout.findViewById(R.id.emptyText);
-        progressBar = (CircularProgressBar) rootLayout.findViewById(R.id.circularProgressBarSavedList);
+        progressBar = (CircularProgressBar) rootLayout.findViewById(R.id.circularProgressBarHistoryList);
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -81,7 +81,7 @@ public class SavedListFragment extends Fragment {
 
                 // If user has swiped left, remove the item from the list.
                 if (direction == 4) {
-                    listRestaurantCardAdapter.remove(viewHolder.getAdapterPosition());
+                    historyRestaurantCardAdapter.remove(viewHolder.getAdapterPosition());
                 }
 
                 // If user has swiped right, open Yelp to current restaurant's page.
@@ -89,11 +89,11 @@ public class SavedListFragment extends Fragment {
 
                     // Open restaurant in Yelp.
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(savedListHolder.getSavedList().get(viewHolder.getAdapterPosition()).getUrl())));
+                            Uri.parse(historyListHolder.getSavedList().get(viewHolder.getAdapterPosition()).getUrl())));
 
                     // We don't want to remove the list item if user wants to see it in Yelp.
                     // Tell the adapter to refresh so the item is can be visible again.
-                    listRestaurantCardAdapter.notifyDataSetChanged();
+                    historyRestaurantCardAdapter.notifyDataSetChanged();
                 }
             }
         };
@@ -110,7 +110,7 @@ public class SavedListFragment extends Fragment {
 
         // If the list is null or empty, we want to avoid any exceptions thrown from the
         // RecyclerView Adapter. So, set TextView to inform the user no items have been added to the savedList.
-        if (savedListHolder.getSavedList() == null || savedListHolder.getSavedList().isEmpty()) {
+        if (historyListHolder.getSavedList() == null || historyListHolder.isEmpty()) {
             listRecyclerView.setVisibility(View.GONE);
             new GetAllFromDBProgress().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return;
@@ -122,7 +122,7 @@ public class SavedListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_saved_list, menu);
+        inflater.inflate(R.menu.menu_history_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -130,8 +130,8 @@ public class SavedListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_all:
-                if (!savedListHolder.getSavedList().isEmpty()) {
-                    listRestaurantCardAdapter.removeAll();
+                if (!historyListHolder.isEmpty()) {
+                    historyRestaurantCardAdapter.removeAll();
                     return true;
                 }
         }
@@ -143,14 +143,14 @@ public class SavedListFragment extends Fragment {
         // http://developer.android.com/training/basics/activity-lifecycle/recreating.html
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArrayList("savedList", savedListHolder.getSavedList());
+        outState.putParcelableArrayList("historyList", historyListHolder.getSavedList());
     }
 
     private void showRestaurants() {
         emptyListView.setVisibility(View.GONE);
         listRecyclerView.setVisibility(View.VISIBLE);
-        listRestaurantCardAdapter = new ListRestaurantCardAdapter(getContext());
-        listRecyclerView.setAdapter(listRestaurantCardAdapter);
+        historyRestaurantCardAdapter = new HistoryListRestaurantCardAdapter(getContext());
+        listRecyclerView.setAdapter(historyRestaurantCardAdapter);
     }
 
     /**
@@ -168,7 +168,8 @@ public class SavedListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            savedListHolder.setSavedList(dbHelper.getAll());
+            historyListHolder.setSavedList(dbHelper.getAll());
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -182,7 +183,7 @@ public class SavedListFragment extends Fragment {
             progressBar.progressiveStop();
             progressBar.setVisibility(View.GONE);
 
-            if (!savedListHolder.getSavedList().isEmpty())
+            if (!historyListHolder.isEmpty())
                 showRestaurants();
             else
                 emptyListView.setVisibility(View.VISIBLE);

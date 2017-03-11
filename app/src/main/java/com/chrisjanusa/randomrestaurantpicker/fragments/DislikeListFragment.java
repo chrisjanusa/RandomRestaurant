@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.fragments;
+package com.chrisjanusa.randomrestaurantpicker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,10 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
-import com.chrisjanusa.findmefood.models.Restaurant;
-import com.chrisjanusa.findmefood.utils.DislikeListHolder;
-import com.chrisjanusa.findmefood.views.DislikeListRestaurantCardAdapter;
+import com.chrisjanusa.randomrestaurantpicker.db.DislikeRestaurantDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.utils.DislikeListHolder;
+import com.chrisjanusa.randomrestaurantpicker.views.DislikeListRestaurantCardAdapter;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 

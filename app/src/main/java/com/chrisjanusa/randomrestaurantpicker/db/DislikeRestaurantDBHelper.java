@@ -1,15 +1,13 @@
-package com.chrisjanusa.findmefood.db;
+package com.chrisjanusa.randomrestaurantpicker.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,11 +18,12 @@ import java.util.ArrayList;
 /**
  * Database helper class to facilitate interactions with an SQLite DB.
  */
-public class HistoryDBHelper extends SQLiteOpenHelper {
+public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "historyDB.db";
-    private static final String TABLE_RESTAURANTS = "history";
+    private static final String DATABASE_NAME = "dislikeRestaurantsDB.db";
+    private static final String TABLE_RESTAURANTS = "dislikeRestaurants";
+
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_RESTNAME = "restaurantname";
     private static final String COLUMN_RATING = "rating";
@@ -39,7 +38,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_LAT = "lat";
     private static final String COLUMN_LON = "lon";
 
-    public HistoryDBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
+    public DislikeRestaurantDBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
@@ -71,12 +70,8 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
     }
 
     public long insert(Restaurant res) {
-        long size = getSize();
-        if(size>50){
-            deleteFirst();
-        }
-        Log.d("RRG", "Size before insert or delete is " + size);
         SQLiteDatabase database = this.getWritableDatabase();
+
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_RESTNAME, res.getName());
         cv.put(COLUMN_RATING, res.getRating());
@@ -108,23 +103,16 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         return ret;
     }
 
-    public long getSize(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_RESTAURANTS);
-        db.close();
-        return cnt;
-    }
-
     public ArrayList<Restaurant> getAll() {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
-        long size = getSize();
-        Log.d("RRG", "Size before getting all is " + size);
+
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = null;
         try {
             cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
 
             if (cursor.moveToFirst()) {
+
                 while (!cursor.isAfterLast()) {
                     JSONArray categories = new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORIES)))
                             .optJSONArray(COLUMN_CATEGORIES);
@@ -166,16 +154,11 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         finally {
             if (cursor != null)
                 cursor.close();
+            else
+                Log.d("RRG", "Cursor is null");
         }
         database.close();
         return restaurants;
-    }
-
-    private long deleteFirst(){
-        SQLiteDatabase database = this.getWritableDatabase();
-        long ret = database.delete(TABLE_RESTAURANTS, COLUMN_ID + "= 1", null);
-        database.close();
-        return ret;
     }
 
     public long delete(Restaurant res) {

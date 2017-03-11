@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.fragments;
+package com.chrisjanusa.randomrestaurantpicker.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,14 +40,16 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.chrisjanusa.RandomRestaurantPicker.BuildConfig;
 import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.findmefood.db.HistoryDBHelper;
-import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
-import com.chrisjanusa.findmefood.managers.UnscrollableLinearLayoutManager;
-import com.chrisjanusa.findmefood.models.Restaurant;
-import com.chrisjanusa.findmefood.utils.LocationProviderHelper;
-import com.chrisjanusa.findmefood.utils.SavedListHolder;
-import com.chrisjanusa.findmefood.utils.TypeOfError;
-import com.chrisjanusa.findmefood.views.MainRestaurantCardAdapter;
+import com.chrisjanusa.randomrestaurantpicker.db.HistoryDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.db.RestaurantDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.managers.UnscrollableLinearLayoutManager;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.utils.LocationProviderHelper;
+import com.chrisjanusa.randomrestaurantpicker.utils.SavedListHolder;
+import com.chrisjanusa.randomrestaurantpicker.utils.TypeOfError;
+import com.chrisjanusa.randomrestaurantpicker.views.MainRestaurantCardAdapter;
+import com.chrisjanusa.randomrestaurantpicker.db.DislikeRestaurantDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.utils.DislikeListHolder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -81,8 +83,7 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import uk.co.deanwild.materialshowcaseview.shape.RectangleShape;
-import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
-import com.chrisjanusa.findmefood.utils.DislikeListHolder;
+
 /**
  * A fragment containing the main activity.
  * Responsible for displaying to the user a random restaurant based off their location  / zip code.
@@ -1033,7 +1034,6 @@ public class MainActivityFragment extends Fragment implements
                             restaurants.remove(chosenRestaurant);
                         }
                         while ((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance) && (!restaurants.isEmpty()));
-
                     }
                 }
             }

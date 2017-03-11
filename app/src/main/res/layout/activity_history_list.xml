@@ -9,7 +9,7 @@
         android:id="@+id/historyListFragment"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="com.chrisjanusa.findmefood.fragments.HistoryListFragment"
+        android:name="com.chrisjanusa.randomrestaurantpicker.fragments.HistoryListFragment"
         tools:layout="@layout/fragment_history_list">
     </fragment>
 

@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.models;
+package com.chrisjanusa.randomrestaurantpicker.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

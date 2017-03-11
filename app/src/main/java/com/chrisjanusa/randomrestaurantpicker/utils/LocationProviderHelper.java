@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.utils;
+package com.chrisjanusa.randomrestaurantpicker.utils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

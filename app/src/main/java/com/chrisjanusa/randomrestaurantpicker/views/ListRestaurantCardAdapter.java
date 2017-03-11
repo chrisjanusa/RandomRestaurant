@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.views;
+package com.chrisjanusa.randomrestaurantpicker.views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,17 +12,17 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
-import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
-import com.chrisjanusa.findmefood.models.Restaurant;
-import com.chrisjanusa.findmefood.utils.DislikeListHolder;
-import com.chrisjanusa.findmefood.utils.SavedListHolder;
+import com.chrisjanusa.randomrestaurantpicker.db.RestaurantDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.db.DislikeRestaurantDBHelper;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.utils.DislikeListHolder;
+import com.chrisjanusa.randomrestaurantpicker.utils.SavedListHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -30,19 +30,22 @@ import java.util.Locale;
 /**
  * A RecyclerView Adapter for the savedList.
  */
-public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<DislikeListRestaurantCardAdapter.RestaurantViewHolder> {
+public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaurantCardAdapter.RestaurantViewHolder> {
 
     private Context context;
     private SavedListHolder savedListHolder;
-    private DislikeListHolder dislikeListHolder;
     private RestaurantDBHelper dbHelper;
+    private DislikeListHolder dislikeListHolder;
     private DislikeRestaurantDBHelper dislikedbHelper;
 
-    public DislikeListRestaurantCardAdapter(Context con) {
+
+
+
+    public ListRestaurantCardAdapter(Context con) {
         this.context = con;
         this.savedListHolder = SavedListHolder.getInstance();
-        this.dislikeListHolder = DislikeListHolder.getInstance();
         this.dbHelper = new RestaurantDBHelper(this.context, null);
+        this.dislikeListHolder = DislikeListHolder.getInstance();
         this.dislikedbHelper = new DislikeRestaurantDBHelper(this.context, null);
         savedListHolder.setSavedList(dbHelper.getAll());
         dislikeListHolder.setSavedList(dislikedbHelper.getAll());
@@ -55,10 +58,17 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
 
         return new RestaurantViewHolder(view);
     }
+    public void remove(int index) {
+        Restaurant deleteThis = savedListHolder.get(index);
+        new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
+        notifyItemRemoved(savedListHolder.remove(deleteThis));
+        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
+    }
+
     private void addToSavedList(Restaurant res) {
         new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
         savedListHolder.add(res);
-        Toast.makeText(context, "Restaurant added to like list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Restaurant added to like list.", Toast.LENGTH_SHORT).show();
     }
     private void addToDislikeList(Restaurant res) {
         new InsertIntoDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
@@ -66,24 +76,16 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
         Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
     }
 
-    public void remove(int index) {
-        Restaurant deleteThis = dislikeListHolder.get(index);
+    public void removeDislike(int index) {
+        Restaurant deleteThis = savedListHolder.get(index);
         new DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        notifyItemRemoved(dislikeListHolder.remove(deleteThis));
+        dislikeListHolder.remove(deleteThis);
         Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
     }
 
-    public void removeSaved(int index) {
-        Restaurant deleteThis = dislikeListHolder.get(index);
-        new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
-        savedListHolder.remove(deleteThis);
-        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
-    }
-
     public void removeAll() {
-        if (dislikeListHolder.getSavedList() == null) return;
-
-        int amount = dislikeListHolder.clear();
+        if (savedListHolder.getSavedList() == null) return;
+        int amount = savedListHolder.clear();
         notifyItemRangeRemoved(0, amount);
         new DeleteAllFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -123,7 +125,7 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
 
     @Override
     public void onBindViewHolder(final RestaurantViewHolder holder, final int position) {
-        final Restaurant restaurant = dislikeListHolder.get(position);
+        final Restaurant restaurant = savedListHolder.get(position);
         Picasso.with(context).load(restaurant.getThumbnailURL()).into(holder.thumbnail);
         holder.ratingImage.setImageResource(loadStars(restaurant.getRating()));
         holder.nameOfRestaurant.setText(restaurant.getName());
@@ -187,7 +189,7 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
             @Override
             public void onClick(View v) {
                 if (savedListHolder.resIsContained(restaurant)) {
-                    removeSaved(position);
+                    remove(position);
                     holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
                     return;
                 }
@@ -201,7 +203,7 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
             @Override
             public void onClick(View v) {
                 if (dislikeListHolder.resIsContained(restaurant)) {
-                    remove(position);
+                    removeDislike(position);
                     holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
                     return;
                 }
@@ -214,7 +216,7 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
 
     @Override
     public int getItemCount() {
-        return dislikeListHolder.size();
+        return savedListHolder.size();
     }
 
     class RestaurantViewHolder extends RecyclerView.ViewHolder {
@@ -228,9 +230,9 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
         ImageButton saveButton;
         ImageButton removeButton;
 
-
         RestaurantViewHolder(View itemView) {
             super(itemView);
+
             nameOfRestaurant = (TextView) itemView.findViewById(R.id.listName);
             ratingImage = (ImageView) itemView.findViewById(R.id.listRating);
             thumbnail = (ImageView) itemView.findViewById(R.id.listThumbnail);
@@ -242,7 +244,19 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
 
         }
     }
+    private class DeleteFromDislikeDB extends AsyncTask<Restaurant, Void, Void> {
 
+        @Override
+        protected Void doInBackground(Restaurant... params) {
+            dislikedbHelper.delete(params[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
     private class DeleteFromDB extends AsyncTask<Restaurant, Void, Void> {
 
         @Override
@@ -257,25 +271,11 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
         }
     }
 
-    private class DeleteFromDislikeDB extends AsyncTask<Restaurant, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Restaurant... params) {
-            dislikedbHelper.delete(params[0]);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
-
     private class DeleteAllFromDB extends AsyncTask<Restaurant, Void, Void> {
 
         @Override
         protected Void doInBackground(Restaurant... params) {
-            dislikedbHelper.deleteAll();
+            dbHelper.deleteAll();
             return null;
         }
 

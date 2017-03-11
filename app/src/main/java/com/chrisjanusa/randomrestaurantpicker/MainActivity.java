@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood;
+package com.chrisjanusa.randomrestaurantpicker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,16 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.findmefood.fragments.MainActivityFragment;
+import com.chrisjanusa.randomrestaurantpicker.fragments.MainActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 

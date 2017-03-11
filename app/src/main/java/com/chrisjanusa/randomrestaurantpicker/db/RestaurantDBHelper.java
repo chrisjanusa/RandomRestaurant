@@ -1,4 +1,4 @@
-package com.chrisjanusa.findmefood.db;
+package com.chrisjanusa.randomrestaurantpicker.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +18,11 @@ import java.util.ArrayList;
 /**
  * Database helper class to facilitate interactions with an SQLite DB.
  */
-public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
+public class RestaurantDBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "dislikeRestaurantsDB.db";
-    private static final String TABLE_RESTAURANTS = "dislikeRestaurants";
+    private static final String DATABASE_NAME = "restaurantsDB.db";
+    private static final String TABLE_RESTAURANTS = "restaurants";
 
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_RESTNAME = "restaurantname";
@@ -38,7 +38,7 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_LAT = "lat";
     private static final String COLUMN_LON = "lon";
 
-    public DislikeRestaurantDBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
+    public RestaurantDBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
@@ -110,7 +110,6 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
         try {
             cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
-
             if (cursor.moveToFirst()) {
 
                 while (!cursor.isAfterLast()) {
@@ -147,6 +146,7 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
                     restaurants.add(0, restaurant);
                     cursor.moveToNext();
                 }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
-package com.chrisjanusa.findmefood.utils;
+package com.chrisjanusa.randomrestaurantpicker.utils;
 
-import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
 
 import java.util.ArrayList;
 import java.util.Random;
