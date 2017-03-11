@@ -38,9 +38,9 @@
             android:id="@+id/tilUserFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:layout_weight=".5"
-            android:layout_marginTop="@dimen/_5sdp">
+        >
 
             <EditText
                 android:id="@+id/filterBox"
@@ -52,7 +52,7 @@
                 android:hint="@string/filter_hint"
                 android:imeOptions="actionDone"
                 android:inputType="textWebEditText"
-                android:paddingBottom="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:maxLines="1"
                 android:textSize="@dimen/_12sdp" />
 
@@ -60,9 +60,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
+            android:paddingBottom="@dimen/_3sdp"
             android:gravity="center"
-            android:paddingTop="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
             android:text="Price Range"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#ffffff"
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_8sdp"
-android:layout_weight=".5"
+            android:layout_weight=".5"
             android:paddingBottom="@dimen/_15sdp"
             android:orientation="horizontal">
 
@@ -129,6 +129,32 @@ android:layout_weight=".5"
             android:text="@string/string_open_at"
             android:textColor="#ffffff"
             android:textOff="@string/string_any_time" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:text="Max distance"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#ffffff"
+            android:background="#1fb2a3"/>
+
+        <EditText
+            android:id="@+id/milesBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="?editTextBackground"
+            android:gravity="center_vertical|start"
+            android:hint="@string/mile_hint"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:paddingBottom="@dimen/_15sdp"
+            android:maxLines="1"
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:layout_width="match_parent"

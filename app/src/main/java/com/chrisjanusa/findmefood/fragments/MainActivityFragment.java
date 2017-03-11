@@ -16,6 +16,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -126,6 +128,8 @@ public class MainActivityFragment extends Fragment implements
     boolean favBool;
     boolean located;
     HistoryDBHelper historyDBHelper;
+    EditText miles;
+    int maxDistance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +140,35 @@ public class MainActivityFragment extends Fragment implements
         rootLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_main, container, false);
         filtersLayout = (LinearLayout) rootLayout.findViewById(R.id.filtersLayout);
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
+        miles = (EditText) filtersLayout.findViewById(R.id.milesBox);
+        String mileString = miles.getText().toString();
+        if(mileString.equals("")){
+            maxDistance = 10000;
+        }
+        else {
+            maxDistance = Integer.parseInt(mileString);
+        }
+        miles.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                String mileString = miles.getText().toString();
+                if(mileString.equals("")){
+                    maxDistance = 10000;
+                }
+                else {
+                    maxDistance = Integer.parseInt(mileString);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+            }
+        });
+
         restaurantView = (RecyclerView) rootLayout.findViewById(R.id.restaurantView);
         restaurantView.setLayoutManager(new UnscrollableLinearLayoutManager(getContext()));
         historyDBHelper = new HistoryDBHelper(getContext(), null);
@@ -978,15 +1011,31 @@ public class MainActivityFragment extends Fragment implements
 
                 if (successfulQuery && !restaurants.isEmpty()) {
                     // Make sure the restaurants list is not empty before accessing it.
-                    chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
-                    restaurants.remove(chosenRestaurant);
+                    do {
+                        chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                        restaurants.remove(chosenRestaurant);
+                    }
+                    while ((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance) && (!restaurants.isEmpty()));
                 }
             } else if (restaurants != null && !restaurants.isEmpty()) {
-                chosenRestaurant = null;
                 do {
                     chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                     restaurants.remove(chosenRestaurant);
-                } while(dislikeListHolder.resIsContained(chosenRestaurant));
+                } while((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance()>maxDistance) && (!restaurants.isEmpty()));
+
+                if (restaurants == null || restaurants.isEmpty()) {
+                    successfulQuery = queryYelp(lat, lon, userInputStr, userFilterStr, 0, 0);
+
+                    if (successfulQuery && !restaurants.isEmpty()) {
+                        // Make sure the restaurants list is not empty before accessing it.
+                        do {
+                            chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                            restaurants.remove(chosenRestaurant);
+                        }
+                        while ((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance) && (!restaurants.isEmpty()));
+
+                    }
+                }
             }
             return chosenRestaurant;
         }
