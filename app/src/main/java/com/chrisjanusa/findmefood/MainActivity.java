@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker;
+package com.chrisjanusa.findmefood;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
-import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.randomrestaurantpicker.fragments.MainActivityFragment;
+import com.chrisjanusa.findmefood.fragments.MainActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.chrisjanusa.RandomRestaurantPicker.R.layout.activity_main);
+        setContentView(com.chrisjanusa.findmefood.R.layout.activity_main);
         searchLocationBox = (FloatingSearchView) findViewById(R.id.searchBox);
-        mDrawerList = (ListView)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.navList);
+        mDrawerList = (ListView)findViewById(com.chrisjanusa.findmefood.R.id.navList);
         addDrawerItems();
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        View header = getLayoutInflater().inflate(com.chrisjanusa.RandomRestaurantPicker.R.layout.header, null);
+        View header = getLayoutInflater().inflate(com.chrisjanusa.findmefood.R.layout.header, null);
         mDrawerList.addHeaderView(header);
-        mDrawerLayout = (DrawerLayout) findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(com.chrisjanusa.findmefood.R.id.drawer_layout);
         //button = (ImageButton)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.imageButton);
         searchLocationBox.attachNavigationDrawerToMenuButton(mDrawerLayout);
         /*button.setOnClickListener(new View.OnClickListener(){
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         // Call MainActivityFragment's onRequestPermissionsResult method.
-        MainActivityFragment fragment = (MainActivityFragment) this.getSupportFragmentManager().findFragmentById(com.chrisjanusa.RandomRestaurantPicker.R.id.mainFragment);
+        MainActivityFragment fragment = (MainActivityFragment) this.getSupportFragmentManager().findFragmentById(com.chrisjanusa.findmefood.R.id.mainFragment);
         fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Call MainActivityFragment's onActivityResult method.
-        MainActivityFragment fragment = (MainActivityFragment) this.getSupportFragmentManager().findFragmentById(com.chrisjanusa.RandomRestaurantPicker.R.id.mainFragment);
+        MainActivityFragment fragment = (MainActivityFragment) this.getSupportFragmentManager().findFragmentById(com.chrisjanusa.findmefood.R.id.mainFragment);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 }

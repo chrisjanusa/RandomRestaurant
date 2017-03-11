@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.fragments;
+package com.chrisjanusa.findmefood.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -38,18 +38,18 @@ import android.widget.ToggleButton;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.chrisjanusa.RandomRestaurantPicker.BuildConfig;
-import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.randomrestaurantpicker.db.HistoryDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.db.RestaurantDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.managers.UnscrollableLinearLayoutManager;
-import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
-import com.chrisjanusa.randomrestaurantpicker.utils.LocationProviderHelper;
-import com.chrisjanusa.randomrestaurantpicker.utils.SavedListHolder;
-import com.chrisjanusa.randomrestaurantpicker.utils.TypeOfError;
-import com.chrisjanusa.randomrestaurantpicker.views.MainRestaurantCardAdapter;
-import com.chrisjanusa.randomrestaurantpicker.db.DislikeRestaurantDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.utils.DislikeListHolder;
+import com.chrisjanusa.findmefood.BuildConfig;
+import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.findmefood.db.HistoryDBHelper;
+import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
+import com.chrisjanusa.findmefood.managers.UnscrollableLinearLayoutManager;
+import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.findmefood.utils.LocationProviderHelper;
+import com.chrisjanusa.findmefood.utils.SavedListHolder;
+import com.chrisjanusa.findmefood.utils.TypeOfError;
+import com.chrisjanusa.findmefood.views.MainRestaurantCardAdapter;
+import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
+import com.chrisjanusa.findmefood.utils.DislikeListHolder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;

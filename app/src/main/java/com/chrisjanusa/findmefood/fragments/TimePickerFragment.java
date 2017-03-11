@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.fragments;
+package com.chrisjanusa.findmefood.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

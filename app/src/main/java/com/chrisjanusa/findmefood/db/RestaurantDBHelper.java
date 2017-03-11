@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.db;
+package com.chrisjanusa.findmefood.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.findmefood.models.Restaurant;
 
 import org.json.JSONArray;
 import org.json.JSONException;

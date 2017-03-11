@@ -1,8 +1,8 @@
-package com.chrisjanusa.randomrestaurantpicker.utils;
+package com.chrisjanusa.findmefood.utils;
 
 import android.util.Log;
 
-import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
+import com.chrisjanusa.findmefood.models.Restaurant;
 
 import java.util.ArrayList;
 

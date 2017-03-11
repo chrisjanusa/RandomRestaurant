@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.utils;
+package com.chrisjanusa.findmefood.utils;
 
 /**
  * A utility class to help keep track of the types of error that may occur when querying Yelp.

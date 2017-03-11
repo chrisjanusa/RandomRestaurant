@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.managers;
+package com.chrisjanusa.findmefood.managers;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;

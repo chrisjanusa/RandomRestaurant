@@ -1,17 +1,17 @@
-package com.chrisjanusa.randomrestaurantpicker;
+package com.chrisjanusa.findmefood;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class HistoryListActivity extends AppCompatActivity {
+public class DislikeListActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(com.chrisjanusa.RandomRestaurantPicker.R.layout.activity_history_list);
+        setContentView(com.chrisjanusa.findmefood.R.layout.activity_dislike_list);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

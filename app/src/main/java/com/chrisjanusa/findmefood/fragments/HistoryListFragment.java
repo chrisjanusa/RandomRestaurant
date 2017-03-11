@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.fragments;
+package com.chrisjanusa.findmefood.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,11 +18,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.randomrestaurantpicker.db.HistoryDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
-import com.chrisjanusa.randomrestaurantpicker.utils.HistoryListHolder;
-import com.chrisjanusa.randomrestaurantpicker.views.HistoryListRestaurantCardAdapter;
+import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.findmefood.db.HistoryDBHelper;
+import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.findmefood.utils.HistoryListHolder;
+import com.chrisjanusa.findmefood.views.HistoryListRestaurantCardAdapter;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;

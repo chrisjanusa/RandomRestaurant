@@ -1,4 +1,4 @@
-package com.chrisjanusa.randomrestaurantpicker.views;
+package com.chrisjanusa.findmefood.views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chrisjanusa.RandomRestaurantPicker.R;
-import com.chrisjanusa.randomrestaurantpicker.db.RestaurantDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.db.DislikeRestaurantDBHelper;
-import com.chrisjanusa.randomrestaurantpicker.models.Restaurant;
-import com.chrisjanusa.randomrestaurantpicker.utils.DislikeListHolder;
-import com.chrisjanusa.randomrestaurantpicker.utils.SavedListHolder;
+import com.chrisjanusa.findmefood.R;
+import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
+import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
+import com.chrisjanusa.findmefood.models.Restaurant;
+import com.chrisjanusa.findmefood.utils.DislikeListHolder;
+import com.chrisjanusa.findmefood.utils.SavedListHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
