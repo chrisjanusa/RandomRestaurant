@@ -67,23 +67,23 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
     private void addToSavedList(Restaurant res) {
         new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
         savedListHolder.add(res);
-        Toast.makeText(context, "Restaurant added to like list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Restaurant added to favorites list", Toast.LENGTH_SHORT).show();
     }
     private void addToDislikeList(Restaurant res) {
         new InsertIntoDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, restaurant);
         dislikeListHolder.add(res);
-        Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Restaurant added to blocked list", Toast.LENGTH_SHORT).show();
     }
     public void removeSaved(Restaurant deleteThis) {
         new MainRestaurantCardAdapter.DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
         savedListHolder.remove(deleteThis);
-        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Restaurant removed from favorites list", Toast.LENGTH_SHORT).show();
     }
 
     public void removeDislike(Restaurant deleteThis) {
         new MainRestaurantCardAdapter.DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
         dislikeListHolder.remove(deleteThis);
-        Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Restaurant removed from blocked list", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -225,7 +225,6 @@ public class MainRestaurantCardAdapter extends RecyclerView.Adapter<MainRestaura
                     if (savedListHolder.resIsContained(restaurant)) {
                         removeSaved(restaurant);
                         saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
-                        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
                         return;
                     }
 

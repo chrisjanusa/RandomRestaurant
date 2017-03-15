@@ -8,196 +8,217 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-
-    <LinearLayout
-        android:id="@+id/filtersLayout"
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/filtersScrollLayout"
         android:layout_marginLeft="@dimen/_6sdp"
         android:paddingTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_6sdp"
-        android:orientation="vertical"
         android:visibility="gone">
-
-
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/filtersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Categories"
-            android:layout_gravity="left"
-            android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#ffffff"
-            android:background="#1fb2a3"/>
+            android:orientation="vertical"
+            >
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilUserFilter"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_5sdp"
-            android:layout_weight=".5"
-        >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Categories"
+                android:layout_gravity="left"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#ffffff"
+                android:background="#1fb2a3"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilUserFilter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_5sdp"
+                android:layout_weight=".5"
+            >
+
+                <EditText
+                    android:id="@+id/filterBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="?editTextBackground"
+                    android:gravity="center_vertical|start"
+                    android:hint="@string/filter_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textWebEditText"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_12sdp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_3sdp"
+                android:gravity="center"
+                android:paddingTop="@dimen/_2sdp"
+                android:text="Price Range"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#ffffff"
+                android:background="#1fb2a3" />
+
+
+
+            <LinearLayout
+                android:id="@+id/priceFilterLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_weight=".5"
+                android:paddingBottom="@dimen/_15sdp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/priceOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/string_one_dollar" />
+
+                <CheckBox
+                    android:id="@+id/priceTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/string_two_dollar" />
+
+                <CheckBox
+                    android:id="@+id/priceThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/string_three_dollar" />
+
+                <CheckBox
+                    android:id="@+id/priceFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/string_four_dollar"/>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:paddingTop="@dimen/_5sdp"
+                android:text="Closes After"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#ffffff"
+                android:background="#1fb2a3"/>
+
+
+            <ToggleButton
+                android:id="@+id/pickTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/string_open_at"
+                android:textColor="#ffffff"
+                android:textOff="@string/string_any_time" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:text="Max distance"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#ffffff"
+                android:background="#1fb2a3"/>
 
             <EditText
-                android:id="@+id/filterBox"
+                android:id="@+id/milesBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="?editTextBackground"
                 android:gravity="center_vertical|start"
-                android:hint="@string/filter_hint"
+                android:hint="@string/mile_hint"
                 android:imeOptions="actionDone"
-                android:inputType="textWebEditText"
-                android:paddingBottom="@dimen/_5sdp"
+                android:inputType="number"
+                android:paddingBottom="@dimen/_15sdp"
                 android:maxLines="1"
                 android:textSize="@dimen/_12sdp" />
 
-        </android.support.design.widget.TextInputLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_3sdp"
-            android:gravity="center"
-            android:paddingTop="@dimen/_2sdp"
-            android:text="Price Range"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#ffffff"
-            android:background="#1fb2a3" />
-
-
-
-        <LinearLayout
-            android:id="@+id/priceFilterLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_weight=".5"
-            android:paddingBottom="@dimen/_15sdp"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/priceOne"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:paddingTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Search Type"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#ffffff"
+                android:background="#1fb2a3"/>
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/string_one_dollar" />
+                android:layout_gravity="center">
+                <RadioButton
+                    android:id="@+id/radioRandom"
+                    android:textSize="@dimen/_20sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Random"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radioFav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_20sdp"
+                    android:text="Just Favorites"
+                     />
 
-            <CheckBox
-                android:id="@+id/priceTwo"
-                android:layout_width="wrap_content"
+            </RadioGroup>
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/string_two_dollar" />
-
-            <CheckBox
-                android:id="@+id/priceThree"
-                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:layout_gravity="left"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/string_three_dollar" />
-
-            <CheckBox
-                android:id="@+id/priceFour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/string_four_dollar"/>
-
+                android:gravity="center"
+                android:text=""
+                android:layout_gravity="left"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_5sdp"
-            android:gravity="center"
-            android:paddingTop="@dimen/_5sdp"
-            android:text="Closes After"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#ffffff"
-            android:background="#1fb2a3"/>
-
-
-        <ToggleButton
-            android:id="@+id/pickTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:text="@string/string_open_at"
-            android:textColor="#ffffff"
-            android:textOff="@string/string_any_time" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_5sdp"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:text="Max distance"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#ffffff"
-            android:background="#1fb2a3"/>
-
-        <EditText
-            android:id="@+id/milesBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="?editTextBackground"
-            android:gravity="center_vertical|start"
-            android:hint="@string/mile_hint"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:paddingBottom="@dimen/_15sdp"
-            android:maxLines="1"
-            android:textSize="@dimen/_12sdp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_5sdp"
-            android:gravity="center"
-            android:paddingTop="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:text="Search Type"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#ffffff"
-            android:background="#1fb2a3"/>
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <RadioButton
-                android:id="@+id/radioRandom"
-                android:textSize="@dimen/_20sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Random"
-                android:checked="true"/>
-            <RadioButton
-                android:id="@+id/radioFav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_20sdp"
-                android:text="Just Favorites"
-                 />
-
-
-        </RadioGroup>
-
-    </LinearLayout>
+    </ScrollView>
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/circularProgressBarMainFragment"
         android:layout_width="@dimen/_44sdp"
         android:layout_height="@dimen/_44sdp"
-        android:layout_below="@id/filtersLayout"
+        android:layout_below="@+id/filtersScrollLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_6sdp"
         android:indeterminate="true"
@@ -227,7 +248,7 @@
         android:id="@+id/restaurantView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_130sdp"
-        android:layout_below="@+id/filtersLayout"
+        android:layout_below="@+id/filtersScrollLayout"
         android:layout_marginTop="@dimen/_6sdp">
 
     </android.support.v7.widget.RecyclerView>
@@ -255,7 +276,7 @@
                 android:id="@+id/mapView"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:apiKey="AIzaSyD7WaTwx4BUcwxw0KCe4I0CMPNO85fTfak"
+                android:apiKey="AIzaSyCUSGv70XCjMwsb_dLtFqIpjtPdF9VpzdM"
                 map:cameraZoom="14"
                 map:liteMode="false"
                 map:mapType="normal" />

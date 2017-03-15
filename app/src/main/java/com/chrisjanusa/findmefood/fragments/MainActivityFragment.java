@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -110,7 +111,7 @@ public class MainActivityFragment extends Fragment implements
     GoogleMap map;
     int errorInQuery;
     int generateBtnColor;
-    LinearLayout filtersLayout;
+    ScrollView filtersLayout;
     LinearLayout mapCardContainer;
     LinearLayout priceFilterLayout;
     LocationProviderHelper locationHelper;
@@ -139,7 +140,7 @@ public class MainActivityFragment extends Fragment implements
         super.onCreateView(inflater, container, savedInstanceState);
 
         rootLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_main, container, false);
-        filtersLayout = (LinearLayout) rootLayout.findViewById(R.id.filtersLayout);
+        filtersLayout = (ScrollView) rootLayout.findViewById(R.id.filtersScrollLayout);
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
         miles = (EditText) filtersLayout.findViewById(R.id.milesBox);
         String mileString = miles.getText().toString();
@@ -1115,7 +1116,7 @@ public class MainActivityFragment extends Fragment implements
             sequence.setConfig(config);
 
             sequence.addSequenceItem(buildShowcaseView(restaurantView, new RectangleShape(0, 0),
-                    "Swipe left to dismiss. Swipe right to open in Yelp. Tap like button to save it for later. Tap dislike button to never see it again."));
+                    "Swipe left to dismiss. Swipe right to open in Yelp. Tap star to save it favorites list. Tap block button to save it to blocked list and never see it again."));
 
             sequence.start();
         }
