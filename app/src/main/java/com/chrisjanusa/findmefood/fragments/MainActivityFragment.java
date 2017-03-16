@@ -31,6 +31,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -132,6 +133,8 @@ public class MainActivityFragment extends Fragment implements
     HistoryDBHelper historyDBHelper;
     EditText miles;
     int maxDistance;
+    RatingBar rating;
+    double ratingNum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,6 +144,16 @@ public class MainActivityFragment extends Fragment implements
 
         rootLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_main, container, false);
         filtersLayout = (ScrollView) rootLayout.findViewById(R.id.filtersScrollLayout);
+        rating = (RatingBar) filtersLayout.findViewById(R.id.rating);
+        ratingNum = rating.getRating();
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            // Called when the user swipes the RatingBar
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float newRating, boolean fromUser) {
+                ratingNum = newRating;
+            }
+        });
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
         miles = (EditText) filtersLayout.findViewById(R.id.milesBox);
         String mileString = miles.getText().toString();
@@ -272,6 +285,8 @@ public class MainActivityFragment extends Fragment implements
             searchLocationBox.setSearchText(savedInstanceState.getString("locationQuery"));
             filterBox.setText(savedInstanceState.getString("filterQuery"));
             restaurants = savedInstanceState.getParcelableArrayList("restaurants");
+            rating.setRating(savedInstanceState.getFloat("rating"));
+            miles.setText(savedInstanceState.getInt("maxDistance"));
         }
         else{
             searchLocationBox.setSearchText("Current Location");
@@ -432,6 +447,8 @@ public class MainActivityFragment extends Fragment implements
             filterBox.setText(savedInstanceState.getString("filterQuery"));
             currentRestaurant = savedInstanceState.getParcelable("currentRestaurant");
             restaurants = savedInstanceState.getParcelableArrayList("restaurants");
+            rating.setRating(savedInstanceState.getFloat("rating"));
+            miles.setText(savedInstanceState.getInt("maxDistance"));
         }
 
         // Reset all cache for showcase id.
@@ -462,6 +479,8 @@ public class MainActivityFragment extends Fragment implements
         outState.putString("filterQuery", String.valueOf(filterBox.getText()));
         outState.putParcelable("currentRestaurant", currentRestaurant);
         outState.putParcelableArrayList("restaurants", restaurants);
+        outState.putFloat("rating", (float) ratingNum);
+        outState.putInt("maxDistance", maxDistance);
         super.onSaveInstanceState(outState);
     }
 
@@ -1017,13 +1036,13 @@ public class MainActivityFragment extends Fragment implements
                         chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                         restaurants.remove(chosenRestaurant);
                     }
-                    while ((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance) && (!restaurants.isEmpty()));
+                    while (isValidRestaurant(chosenRestaurant,dislikeListHolder));
                 }
             } else if (restaurants != null && !restaurants.isEmpty()) {
                 do {
                     chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                     restaurants.remove(chosenRestaurant);
-                } while((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance()>maxDistance) && (!restaurants.isEmpty()));
+                } while(isValidRestaurant(chosenRestaurant,dislikeListHolder));
 
                 if (restaurants == null || restaurants.isEmpty()) {
                     successfulQuery = queryYelp(lat, lon, userInputStr, userFilterStr, 0, 0);
@@ -1034,7 +1053,7 @@ public class MainActivityFragment extends Fragment implements
                             chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                             restaurants.remove(chosenRestaurant);
                         }
-                        while ((dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance) && (!restaurants.isEmpty()));
+                        while (isValidRestaurant(chosenRestaurant,dislikeListHolder));
                     }
                 }
             }
@@ -1121,4 +1140,9 @@ public class MainActivityFragment extends Fragment implements
             sequence.start();
         }
     }
+
+    private boolean isValidRestaurant(Restaurant chosenRestaurant, DislikeListHolder dislikeListHolder){
+        return (dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance || chosenRestaurant.getRating() < ratingNum) && (!restaurants.isEmpty());
+    }
+
 }
