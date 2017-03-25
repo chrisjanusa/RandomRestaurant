@@ -1,9 +1,14 @@
 package com.chrisjanusa.findmefood.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -52,9 +57,55 @@ public class DislikeListRestaurantCardAdapter extends RecyclerView.Adapter<Disli
     @Override
     public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_restaurant_card, parent, false);
-
-        return new RestaurantViewHolder(view);
+        final RestaurantViewHolder newView = new RestaurantViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                dialog(dislikeListHolder.get(newView.getLayoutPosition()));
+            }
+        });
+        return newView;
     }
+
+    public void dialog(final Restaurant restaurant){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Open "+ restaurant.getName()+" in ")
+                .setItems(R.array.Apis, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 1:
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+restaurant.getLat()+","+restaurant.getLon()+"?z=10&q="+restaurant.getName()+"&q="+restaurant.getAddress())));
+                                break;
+
+                            case 2:
+                                try {
+                                    PackageManager pm = context.getPackageManager();
+                                    pm.getPackageInfo("com.ubercab", PackageManager.GET_ACTIVITIES);
+                                    String uri = "https://m.uber.com/ul/?action=setPickup&client_id=bUBQ-U07D9vS_RQBPdhfF5PiigfU17et&pickup=my_location&dropoff[formatted_address]="+restaurant.getAddress()+"&dropoff[latitude]="+restaurant.getLat()+"&dropoff[longitude]="+restaurant.getLon()+"\n";
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(uri));
+                                    context.startActivity(intent);
+                                } catch (PackageManager.NameNotFoundException e) {
+                                    // No Uber app! Open mobile website.
+                                    String url = "https://m.uber.com/sign-up?client_id=<CLIENT_ID>";
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setData(Uri.parse(url));
+                                    context.startActivity(i);
+                                }
+                                break;
+                            case 0:
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(restaurant.getUrl())));
+                                break;
+
+                            default:
+                                break;
+
+                        }
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
     private void addToSavedList(Restaurant res) {
         new InsertIntoDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
         savedListHolder.add(res);

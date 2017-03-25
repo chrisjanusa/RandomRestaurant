@@ -35,4 +35,10 @@
     <string name="string_any_time">Any time</string>
     <string name="drawer_open">opening</string>
     <string name="drawer_close">closing</string>
+    <string-array
+        name="Apis">
+        <item>Yelp</item>
+        <item>Google Maps</item>
+        <item>Uber</item>
+    </string-array>
 </resources>

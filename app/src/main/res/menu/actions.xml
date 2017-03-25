@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/openYelp"
+        android:title="Yelp" />
+    <item android:id="@+id/openGoogle"
+        android:title="Google Maps" />
+    <item android:id="@+id/openUber"
+        android:title="Uber" />
+</menu>

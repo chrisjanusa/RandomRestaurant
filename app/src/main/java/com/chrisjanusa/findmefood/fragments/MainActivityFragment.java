@@ -41,6 +41,7 @@ import android.widget.ToggleButton;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.chrisjanusa.findmefood.BuildConfig;
+import com.chrisjanusa.findmefood.Manifest;
 import com.chrisjanusa.findmefood.R;
 import com.chrisjanusa.findmefood.db.HistoryDBHelper;
 import com.chrisjanusa.findmefood.db.RestaurantDBHelper;
@@ -126,7 +127,6 @@ public class MainActivityFragment extends Fragment implements
     String filterQuery = "";
     String searchQuery = "";
     ToggleButton pickTime;
-    Context context = getContext();
     RadioGroup radioGroup;
     boolean favBool;
     boolean located;
@@ -135,12 +135,15 @@ public class MainActivityFragment extends Fragment implements
     int maxDistance;
     RatingBar rating;
     double ratingNum;
+    boolean showError;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
+
+        showError=false;
 
         rootLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_main, container, false);
         filtersLayout = (ScrollView) rootLayout.findViewById(R.id.filtersScrollLayout);
@@ -299,8 +302,10 @@ public class MainActivityFragment extends Fragment implements
                 int id = item.getItemId();
                 restartQuery = true;
 
-                if (id == R.id.search_box_gps)
+                if (id == R.id.search_box_gps) {
+                    Toast.makeText(getContext(), "here", Toast.LENGTH_SHORT).show();
                     locationHelper.requestLocation();
+                }
                 else if (id == R.id.search_box_filter) {
                     if (filtersLayout.getVisibility() == View.GONE) {
                         showFilterElements();
@@ -417,7 +422,9 @@ public class MainActivityFragment extends Fragment implements
                     Location location = locationHelper.getLocation();
 
                     if (location == null) {
-                        displayAlertDialog(R.string.string_location_not_found, "Error");
+                        if(showError) {
+                            displayAlertDialog(R.string.string_location_not_found, "Error");
+                        }
                     } else {
                             initialYelpQuery = new RunYelpQuery(
                                     filterBoxText,
@@ -453,6 +460,11 @@ public class MainActivityFragment extends Fragment implements
 
         // Reset all cache for showcase id.
         //MaterialShowcaseView.resetAll(getContext());
+        String[] perms = {"android.permission.ACCESS_COARSE_LOCATION"};
+        if(EasyPermissions.hasPermissions(getContext(), perms))
+            generate.performClick();
+        showError=true;
+
 
         // A tutorial that displays only once explaining the input to the app.
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "MAIN");

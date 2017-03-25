@@ -17,11 +17,8 @@ import com.chrisjanusa.findmefood.fragments.MainActivityFragment;
 public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
-    private ListView images;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
-    private ActionBarDrawerToggle mDrawerToggle;
-    //private ImageButton button;
     private FloatingSearchView searchLocationBox;
 
 
@@ -36,13 +33,7 @@ public class MainActivity extends AppCompatActivity {
         View header = getLayoutInflater().inflate(com.chrisjanusa.findmefood.R.layout.header, null);
         mDrawerList.addHeaderView(header);
         mDrawerLayout = (DrawerLayout) findViewById(com.chrisjanusa.findmefood.R.id.drawer_layout);
-        //button = (ImageButton)findViewById(com.chrisjanusa.RandomRestaurantPicker.R.id.imageButton);
         searchLocationBox.attachNavigationDrawerToMenuButton(mDrawerLayout);
-        /*button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-            }
-            });*/
 
     }
 
