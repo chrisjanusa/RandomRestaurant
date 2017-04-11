@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -50,6 +51,7 @@ import com.chrisjanusa.findmefood.models.Restaurant;
 import com.chrisjanusa.findmefood.utils.LocationProviderHelper;
 import com.chrisjanusa.findmefood.utils.SavedListHolder;
 import com.chrisjanusa.findmefood.utils.TypeOfError;
+import com.chrisjanusa.findmefood.utils.YelpThread;
 import com.chrisjanusa.findmefood.views.MainRestaurantCardAdapter;
 import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
 import com.chrisjanusa.findmefood.utils.DislikeListHolder;
@@ -97,33 +99,38 @@ public class MainActivityFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks,
         TimePickerFragment.TimePickerCallbacks {
 
-    ArrayList<Restaurant> restaurants = new ArrayList<>();
-    AsyncTask initialYelpQuery;
+    static ArrayList<Restaurant> restaurants = new ArrayList<>();
+    static AsyncTask initialYelpQuery;
     boolean restartQuery = true;
     boolean taskRunning = false;
     Button generate;
-    CheckBox priceFour;
-    CheckBox priceOne;
-    CheckBox priceThree;
-    CheckBox priceTwo;
+    static CheckBox priceFour;
+    static CheckBox priceOne;
+    static CheckBox priceThree;
+    static CheckBox priceTwo;
+    /*Boolean boolPriceOne;
+    Boolean boolPriceTwo;
+    Boolean boolPriceThree;
+    Boolean boolPriceFour;*/
+
     CircularProgressBar progressBar;
     EditText filterBox;
     FloatingSearchView searchLocationBox;
     GoogleApiClient mGoogleApiClient;
     GoogleMap map;
-    int errorInQuery;
+    static int errorInQuery;
     int generateBtnColor;
     ScrollView filtersLayout;
     LinearLayout mapCardContainer;
     LinearLayout priceFilterLayout;
     LocationProviderHelper locationHelper;
-    long openAtTimeFilter = 0;
+    static long openAtTimeFilter = 0;
     MainRestaurantCardAdapter mainRestaurantCardAdapter;
     MapView mapView;
     RecyclerView restaurantView;
     RelativeLayout rootLayout;
     Restaurant currentRestaurant;
-    String accessToken;
+    static String accessToken;
     String filterQuery = "";
     String searchQuery = "";
     ToggleButton pickTime;
@@ -136,6 +143,7 @@ public class MainActivityFragment extends Fragment implements
     RatingBar rating;
     double ratingNum;
     boolean showError;
+    static ArrayList<YelpThread> threads = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -426,7 +434,7 @@ public class MainActivityFragment extends Fragment implements
                             displayAlertDialog(R.string.string_location_not_found, "Error");
                         }
                     } else {
-                            initialYelpQuery = new RunYelpQuery(
+                        initialYelpQuery = new RunYelpQuery(
                                     filterBoxText,
                                     String.valueOf(location.getLatitude()),
                                     String.valueOf(location.getLongitude()))
@@ -717,8 +725,8 @@ public class MainActivityFragment extends Fragment implements
      * @param whichAsyncTask    the AsyncTask to cancel if necessary.
      * @return true if successful querying Yelp; false otherwise.
      */
-    private boolean queryYelp(String lat, String lon, String input,
-                              String filter, int offset, int whichAsyncTask) {
+    public static boolean queryYelp(String lat, String lon, String input,
+                              String filter, int offset, int whichAsyncTask, YelpThread thread) {
 
         // Build Yelp request.
         try {
@@ -830,6 +838,7 @@ public class MainActivityFragment extends Fragment implements
         }
 
         errorInQuery = TypeOfError.NO_ERROR;
+        threads.remove(thread);
         return true;
     }
 
@@ -839,7 +848,7 @@ public class MainActivityFragment extends Fragment implements
      * @param obj: JSONObject that holds all restaurant info.
      * @return Restaurant or null if an error occurs.
      */
-    private Restaurant convertJSONToRestaurant(JSONObject obj) {
+    public static Restaurant convertJSONToRestaurant(JSONObject obj) {
         try {
             // Getting the JSON array of categories
             JSONArray categoriesJSON = obj.getJSONArray("categories");
@@ -1033,6 +1042,7 @@ public class MainActivityFragment extends Fragment implements
             }
 
 
+
             DislikeListHolder dislikeListHolder;
             DislikeRestaurantDBHelper dbHelper = new DislikeRestaurantDBHelper(getContext(), null);
             dislikeListHolder = DislikeListHolder.getInstance();
@@ -1040,9 +1050,9 @@ public class MainActivityFragment extends Fragment implements
             // Get restaurants only when the restaurants list is empty.
             Restaurant chosenRestaurant = null;
             if (restaurants == null || restaurants.isEmpty()) {
-                successfulQuery = queryYelp(lat, lon, userInputStr, userFilterStr, 0, 0);
+                refreshList(lat, lon, userInputStr, userFilterStr, 500);
 
-                if (successfulQuery && !restaurants.isEmpty()) {
+                if (!restaurants.isEmpty()) {
                     // Make sure the restaurants list is not empty before accessing it.
                     do {
                         chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
@@ -1054,18 +1064,17 @@ public class MainActivityFragment extends Fragment implements
                 do {
                     chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                     restaurants.remove(chosenRestaurant);
-                } while(isValidRestaurant(chosenRestaurant,dislikeListHolder));
-
+                } while (isValidRestaurant(chosenRestaurant, dislikeListHolder));
                 if (restaurants == null || restaurants.isEmpty()) {
-                    successfulQuery = queryYelp(lat, lon, userInputStr, userFilterStr, 0, 0);
+                    refreshList(lat, lon, userInputStr, userFilterStr, 500);
 
-                    if (successfulQuery && !restaurants.isEmpty()) {
+                    if (!restaurants.isEmpty()) {
                         // Make sure the restaurants list is not empty before accessing it.
                         do {
                             chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
                             restaurants.remove(chosenRestaurant);
                         }
-                        while (isValidRestaurant(chosenRestaurant,dislikeListHolder));
+                        while (isValidRestaurant(chosenRestaurant, dislikeListHolder));
                     }
                 }
             }
@@ -1157,4 +1166,26 @@ public class MainActivityFragment extends Fragment implements
         return (dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance || chosenRestaurant.getRating() < ratingNum) && (!restaurants.isEmpty());
     }
 
+    private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex){
+        if(threads.size()>=1){
+            try {
+                threads.get(0).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if (restaurants == null || restaurants.isEmpty()) {
+            for (int i = 0; i < maxIndex; i += 50) {
+                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i));
+                threads.get(threads.size()-1).start();
+            }
+        }
+        if(threads.size()>=1){
+            try {
+                threads.get(0).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

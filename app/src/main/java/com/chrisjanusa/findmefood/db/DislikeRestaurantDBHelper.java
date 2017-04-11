@@ -23,7 +23,6 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "dislikeRestaurantsDB.db";
     private static final String TABLE_RESTAURANTS = "dislikeRestaurants";
-
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_RESTNAME = "restaurantname";
     private static final String COLUMN_RATING = "rating";
@@ -111,7 +110,8 @@ public class DislikeRestaurantDBHelper extends SQLiteOpenHelper {
         try {
             cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
 
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) { //moves to first row in table (moveToFirst will return false if the table is empty
+                //get value in each column and store it in a restaurant object then add it to arraylist to be returned
 
                 while (!cursor.isAfterLast()) {
                     JSONArray categories = new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORIES)))

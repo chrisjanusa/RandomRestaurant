@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.chrisjanusa.findmefood.models.Restaurant;
 
@@ -71,10 +70,9 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     public long insert(Restaurant res) {
         long size = getSize();
-        if(size>50){
+        if(size>=50){
             deleteFirst();
         }
-        Log.d("RRG", "Size before insert or delete is " + size);
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_RESTNAME, res.getName());
@@ -116,15 +114,15 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Restaurant> getAll() {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
-        long size = getSize();
-        Log.d("RRG", "Size before getting all is " + size);
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = null;
         try {
-            cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
+            cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null); //cursor will point to all rows in table
 
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) { //moves to first row in table (moveToFirst will return false if the table is empty
                 while (!cursor.isAfterLast()) {
+                    //get value in each column and store it in a restaurant object then add it to arraylist to be returned
+
                     JSONArray categories = new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORIES)))
                             .optJSONArray(COLUMN_CATEGORIES);
                     JSONArray address =  new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)))
@@ -172,7 +170,10 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     private long deleteFirst(){
         SQLiteDatabase database = this.getWritableDatabase();
-        long ret = database.delete(TABLE_RESTAURANTS, COLUMN_ID + "= 1", null);
+        Cursor cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
+        cursor.moveToFirst();
+        String resName = cursor.getString(cursor.getColumnIndex(COLUMN_RESTNAME));
+        long ret = database.delete(TABLE_RESTAURANTS, COLUMN_RESTNAME + "=?", new String[]{resName});
         database.close();
         return ret;
     }

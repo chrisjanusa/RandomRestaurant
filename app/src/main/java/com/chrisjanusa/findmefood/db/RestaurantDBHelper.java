@@ -112,7 +112,9 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
             cursor = database.rawQuery(String.format("SELECT * FROM %s", TABLE_RESTAURANTS), null);
             if (cursor.moveToFirst()) {
 
-                while (!cursor.isAfterLast()) {
+                while (!cursor.isAfterLast()) {//moves to first row in table (moveToFirst will return false if the table is empty
+                    //get value in each column and store it in a restaurant object then add it to arraylist to be returned
+
                     JSONArray categories = new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORIES)))
                             .optJSONArray(COLUMN_CATEGORIES);
                     JSONArray address =  new JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)))
