@@ -210,7 +210,6 @@
                     android:textSize="@dimen/_20sdp"
                     android:text="Just Favorites"
                      />
-
             </RadioGroup>
             <TextView
                 android:layout_width="match_parent"

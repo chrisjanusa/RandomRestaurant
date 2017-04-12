@@ -80,6 +80,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.concurrent.CountDownLatch;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
@@ -108,10 +109,7 @@ public class MainActivityFragment extends Fragment implements
     static CheckBox priceOne;
     static CheckBox priceThree;
     static CheckBox priceTwo;
-    /*Boolean boolPriceOne;
-    Boolean boolPriceTwo;
-    Boolean boolPriceThree;
-    Boolean boolPriceFour;*/
+    CountDownLatch latch = new CountDownLatch(0);
 
     CircularProgressBar progressBar;
     EditText filterBox;
@@ -156,45 +154,8 @@ public class MainActivityFragment extends Fragment implements
         rootLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_main, container, false);
         filtersLayout = (ScrollView) rootLayout.findViewById(R.id.filtersScrollLayout);
         rating = (RatingBar) filtersLayout.findViewById(R.id.rating);
-        ratingNum = rating.getRating();
-        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-
-            // Called when the user swipes the RatingBar
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float newRating, boolean fromUser) {
-                ratingNum = newRating;
-            }
-        });
         priceFilterLayout = (LinearLayout) filtersLayout.findViewById(R.id.priceFilterLayout);
         miles = (EditText) filtersLayout.findViewById(R.id.milesBox);
-        String mileString = miles.getText().toString();
-        if(mileString.equals("")){
-            maxDistance = 10000;
-        }
-        else {
-            maxDistance = Integer.parseInt(mileString);
-        }
-        miles.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-                String mileString = miles.getText().toString();
-                if(mileString.equals("")){
-                    maxDistance = 10000;
-                }
-                else {
-                    maxDistance = Integer.parseInt(mileString);
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-            }
-        });
-
         restaurantView = (RecyclerView) rootLayout.findViewById(R.id.restaurantView);
         restaurantView.setLayoutManager(new UnscrollableLinearLayoutManager(getContext()));
         historyDBHelper = new HistoryDBHelper(getContext(), null);
@@ -311,7 +272,6 @@ public class MainActivityFragment extends Fragment implements
                 restartQuery = true;
 
                 if (id == R.id.search_box_gps) {
-                    Toast.makeText(getContext(), "here", Toast.LENGTH_SHORT).show();
                     locationHelper.requestLocation();
                 }
                 else if (id == R.id.search_box_filter) {
@@ -426,7 +386,14 @@ public class MainActivityFragment extends Fragment implements
                      * Check to make sure the location is not null before starting.
                      * Else, begin the AsyncTask.
                      */
-
+                    ratingNum = rating.getRating();
+                    String mileString = miles.getText().toString();
+                    if(mileString.equals("")){
+                        maxDistance = 10;
+                    }
+                    else {
+                        maxDistance = Integer.parseInt(mileString);
+                    }
                     Location location = locationHelper.getLocation();
 
                     if (location == null) {
@@ -726,7 +693,7 @@ public class MainActivityFragment extends Fragment implements
      * @return true if successful querying Yelp; false otherwise.
      */
     public static boolean queryYelp(String lat, String lon, String input,
-                              String filter, int offset, int whichAsyncTask, YelpThread thread) {
+                              String filter, int offset, int whichAsyncTask, YelpThread thread, CountDownLatch latch) {
 
         // Build Yelp request.
         try {
@@ -838,6 +805,7 @@ public class MainActivityFragment extends Fragment implements
         }
 
         errorInQuery = TypeOfError.NO_ERROR;
+        latch.countDown();
         threads.remove(thread);
         return true;
     }
@@ -975,7 +943,6 @@ public class MainActivityFragment extends Fragment implements
 
     // Async task that connects to Yelp's API and queries for restaurants based on location / zip code.
     public class RunYelpQuery extends AsyncTask<Void, Void, Restaurant> {
-
         String[] params;
         String userInputStr;
         String userFilterStr;
@@ -1014,7 +981,7 @@ public class MainActivityFragment extends Fragment implements
 
         @Override
         protected Restaurant doInBackground(Void... aVoid) {
-
+            Log.d("Running Yelp", "Running Yelp");
             if (isCancelled()) return null;
 
             // Check for parameters so we can send the appropriate request based on user input.
@@ -1037,7 +1004,7 @@ public class MainActivityFragment extends Fragment implements
             }
 
             if (restartQuery) {
-                restaurants.clear();
+                emptyList();
                 restartQuery = false;
             }
 
@@ -1088,6 +1055,7 @@ public class MainActivityFragment extends Fragment implements
             if (restaurant == null) {
                 switch (errorInQuery) {
                     case TypeOfError.NO_RESTAURANTS: {
+                        Log.d("Error", "No restaurants");
                         Toast.makeText(getContext(),
                                 R.string.string_no_restaurants_found,
                                 Toast.LENGTH_LONG).show();
@@ -1163,11 +1131,38 @@ public class MainActivityFragment extends Fragment implements
     }
 
     private boolean isValidRestaurant(Restaurant chosenRestaurant, DislikeListHolder dislikeListHolder){
+        if(chosenRestaurant.getDistance() > maxDistance){
+            Log.d("distances on error", "This distance " + chosenRestaurant.getDistance() + " Max Distance " + maxDistance);
+        }
         return (dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance || chosenRestaurant.getRating() < ratingNum) && (!restaurants.isEmpty());
     }
 
     private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex){
-        if(threads.size()>=1){
+        latch = new CountDownLatch(1);
+        if (restaurants == null || restaurants.size()<=10) {
+            if(!threads.isEmpty() && (restaurants.isEmpty() || restaurants == null)){
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            latch = new CountDownLatch(1);
+            if (restaurants == null || restaurants.size()<=10) {
+                for (int i = 0; i < maxIndex; i += 50) {
+                    threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch));
+                    threads.get(threads.size()-1).start();
+                }
+                if((restaurants.isEmpty() || restaurants == null)){
+                    try {
+                        latch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        /*if(threads.size()>=1){
             try {
                 threads.get(0).join();
             } catch (InterruptedException e) {
@@ -1186,6 +1181,26 @@ public class MainActivityFragment extends Fragment implements
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }*/
+    }
+
+    private void refreshListBackground(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex) {
+        if (restaurants == null || restaurants.size() <= 10) {
+            for (int i = 0; i < maxIndex; i += 50) {
+                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch));
+                threads.get(threads.size() - 1).start();
+            }
         }
+    }
+
+    private void emptyList(){
+        while(!threads.isEmpty()){
+            try {
+                threads.get(0).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        restaurants.clear();
     }
 }
