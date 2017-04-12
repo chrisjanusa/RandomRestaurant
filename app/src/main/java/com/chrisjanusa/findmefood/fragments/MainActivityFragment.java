@@ -137,9 +137,9 @@ public class MainActivityFragment extends Fragment implements
     boolean located;
     HistoryDBHelper historyDBHelper;
     EditText miles;
-    int maxDistance;
+    static int maxDistance;
     RatingBar rating;
-    double ratingNum;
+    static double ratingNum;
     boolean showError;
     static ArrayList<YelpThread> threads = new ArrayList<>();
 
@@ -258,7 +258,7 @@ public class MainActivityFragment extends Fragment implements
             filterBox.setText(savedInstanceState.getString("filterQuery"));
             restaurants = savedInstanceState.getParcelableArrayList("restaurants");
             rating.setRating(savedInstanceState.getFloat("rating"));
-            miles.setText(savedInstanceState.getInt("maxDistance"));
+            miles.setText(savedInstanceState.getString("maxDistance"));
         }
         else{
             searchLocationBox.setSearchText("Current Location");
@@ -386,13 +386,21 @@ public class MainActivityFragment extends Fragment implements
                      * Check to make sure the location is not null before starting.
                      * Else, begin the AsyncTask.
                      */
+                    double prevRating = ratingNum;
                     ratingNum = rating.getRating();
+                    if(ratingNum!=prevRating){
+                        restartQuery = true;
+                    }
+                    int prevDist = maxDistance;
                     String mileString = miles.getText().toString();
                     if(mileString.equals("")){
                         maxDistance = 10;
                     }
                     else {
                         maxDistance = Integer.parseInt(mileString);
+                    }
+                    if(maxDistance!=prevDist){
+                        restartQuery=true;
                     }
                     Location location = locationHelper.getLocation();
 
@@ -430,7 +438,7 @@ public class MainActivityFragment extends Fragment implements
             currentRestaurant = savedInstanceState.getParcelable("currentRestaurant");
             restaurants = savedInstanceState.getParcelableArrayList("restaurants");
             rating.setRating(savedInstanceState.getFloat("rating"));
-            miles.setText(savedInstanceState.getInt("maxDistance"));
+            miles.setText(savedInstanceState.getString("maxDistance"));
         }
 
         // Reset all cache for showcase id.
@@ -466,8 +474,8 @@ public class MainActivityFragment extends Fragment implements
         outState.putString("filterQuery", String.valueOf(filterBox.getText()));
         outState.putParcelable("currentRestaurant", currentRestaurant);
         outState.putParcelableArrayList("restaurants", restaurants);
-        outState.putFloat("rating", (float) ratingNum);
-        outState.putInt("maxDistance", maxDistance);
+        outState.putFloat("rating", rating.getRating());
+        outState.putString("maxDistance", miles.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -693,7 +701,7 @@ public class MainActivityFragment extends Fragment implements
      * @return true if successful querying Yelp; false otherwise.
      */
     public static boolean queryYelp(String lat, String lon, String input,
-                              String filter, int offset, int whichAsyncTask, YelpThread thread, CountDownLatch latch) {
+                              String filter, int offset, int whichAsyncTask, YelpThread thread, CountDownLatch latch, DislikeListHolder dislikeListHolder) {
 
         // Build Yelp request.
         try {
@@ -770,6 +778,9 @@ public class MainActivityFragment extends Fragment implements
             // This occurs if a network communication error occurs or if no restaurants were found.
             if (length <= 0) {
                 errorInQuery = TypeOfError.NO_RESTAURANTS;
+                latch.countDown();
+                Log.d("Running Yelp", "Latch decremented: Communication error");
+                threads.remove(thread);
                 return false;
             }
 
@@ -778,12 +789,15 @@ public class MainActivityFragment extends Fragment implements
                     break;
 
                 Restaurant res = convertJSONToRestaurant(jsonBusinessesArray.getJSONObject(i));
-                if (res != null)
+                if (res != null && isValidRestaurant(res, dislikeListHolder))
                     restaurants.add(res);
             }
 
             if (restaurants.isEmpty()) {
                 errorInQuery = TypeOfError.NO_RESTAURANTS;
+                latch.countDown();
+                Log.d("Running Yelp", "Latch decremented: No Valid Restaurants");
+                threads.remove(thread);
                 return false;
             }
 
@@ -793,19 +807,29 @@ public class MainActivityFragment extends Fragment implements
             else if (e.getMessage().contains("No value for"))
                 errorInQuery = TypeOfError.MISSING_INFO;
             e.printStackTrace();
+            latch.countDown();
+            Log.d("Running Yelp", "Latch decremented: Error in query");
+            threads.remove(thread);
             return false;
         } catch (FileNotFoundException e) {
             errorInQuery = TypeOfError.INVALID_LOCATION;
             e.printStackTrace();
+            latch.countDown();
+            Log.d("Running Yelp", "Latch decremented: invalid location");
+            threads.remove(thread);
             return false;
         } catch (Exception e) {
             if (e.getMessage().contains("timed out")) errorInQuery = TypeOfError.TIMED_OUT;
             e.printStackTrace();
+            latch.countDown();
+            Log.d("Running Yelp", "Latch decremented: timeout");
+            threads.remove(thread);
             return false;
         }
 
         errorInQuery = TypeOfError.NO_ERROR;
         latch.countDown();
+        Log.d("Running Yelp", "Latch decremented: all good - #restaurants " +restaurants.size());
         threads.remove(thread);
         return true;
     }
@@ -966,6 +990,7 @@ public class MainActivityFragment extends Fragment implements
             disableGenerateButton();
 
             if (restartQuery) {
+                Log.d("Running Yelp", "PreExecute reached");
                 ((CircularProgressDrawable) progressBar.getIndeterminateDrawable()).start();
                 hideNormalLayout();
                 progressBar.setVisibility(View.VISIBLE);
@@ -1017,33 +1042,18 @@ public class MainActivityFragment extends Fragment implements
             // Get restaurants only when the restaurants list is empty.
             Restaurant chosenRestaurant = null;
             if (restaurants == null || restaurants.isEmpty()) {
-                refreshList(lat, lon, userInputStr, userFilterStr, 500);
-
-                if (!restaurants.isEmpty()) {
-                    // Make sure the restaurants list is not empty before accessing it.
-                    do {
-                        chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
-                        restaurants.remove(chosenRestaurant);
-                    }
-                    while (isValidRestaurant(chosenRestaurant,dislikeListHolder));
-                }
-            } else if (restaurants != null && !restaurants.isEmpty()) {
-                do {
-                    chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
-                    restaurants.remove(chosenRestaurant);
-                } while (isValidRestaurant(chosenRestaurant, dislikeListHolder));
-                if (restaurants == null || restaurants.isEmpty()) {
-                    refreshList(lat, lon, userInputStr, userFilterStr, 500);
-
-                    if (!restaurants.isEmpty()) {
-                        // Make sure the restaurants list is not empty before accessing it.
-                        do {
-                            chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
-                            restaurants.remove(chosenRestaurant);
-                        }
-                        while (isValidRestaurant(chosenRestaurant, dislikeListHolder));
-                    }
-                }
+                Log.d("Running Yelp", "Refreshing List");
+                refreshList(lat, lon, userInputStr, userFilterStr, 500, dislikeListHolder);
+            }
+            if (restaurants != null && !restaurants.isEmpty()) {
+                Log.d("Running Yelp", "Choosing restaurant: " + restaurants.isEmpty());
+                // Make sure the restaurants list is not empty before accessing it.
+                chosenRestaurant = restaurants.get(new Random().nextInt(restaurants.size()));
+                restaurants.remove(chosenRestaurant);
+            }
+            else{
+                Log.d("Running Yelp", "No Restaurant Found");
+                errorInQuery = TypeOfError.NO_RESTAURANTS;
             }
             return chosenRestaurant;
         }
@@ -1130,64 +1140,53 @@ public class MainActivityFragment extends Fragment implements
         }
     }
 
-    private boolean isValidRestaurant(Restaurant chosenRestaurant, DislikeListHolder dislikeListHolder){
-        if(chosenRestaurant.getDistance() > maxDistance){
-            Log.d("distances on error", "This distance " + chosenRestaurant.getDistance() + " Max Distance " + maxDistance);
-        }
-        return (dislikeListHolder.resIsContained(chosenRestaurant) || chosenRestaurant.getDistance() > maxDistance || chosenRestaurant.getRating() < ratingNum) && (!restaurants.isEmpty());
+    private static boolean isValidRestaurant(Restaurant chosenRestaurant, DislikeListHolder dislikeListHolder){
+        boolean tooFar = chosenRestaurant.getDistance() > maxDistance;
+        boolean blocked = dislikeListHolder.resIsContained(chosenRestaurant);
+        boolean tooBad = chosenRestaurant.getRating() < ratingNum;
+        return !(tooBad||tooFar||blocked);
     }
 
-    private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex){
+    private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex, DislikeListHolder dislikeListHolder){
         latch = new CountDownLatch(1);
+        Log.d("Running Yelp", "Countdown latch set");
         if (restaurants == null || restaurants.size()<=10) {
             if(!threads.isEmpty() && (restaurants.isEmpty() || restaurants == null)){
                 try {
+                    Log.d("Running Yelp", "Thread exists so awaiting thread");
                     latch.await();
+                    Log.d("Running Yelp", "Thread finished");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+
             latch = new CountDownLatch(1);
+            Log.d("Running Yelp", "Countdown Latch 2 Set");
+
             if (restaurants == null || restaurants.size()<=10) {
+                Log.d("Running Yelp", "Still no restaurants so starting all threads");
                 for (int i = 0; i < maxIndex; i += 50) {
-                    threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch));
+                    threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder));
                     threads.get(threads.size()-1).start();
                 }
                 if((restaurants.isEmpty() || restaurants == null)){
                     try {
+                        Log.d("Running Yelp", "Awaiting new threads");
                         latch.await();
+                        Log.d("Running Yelp", "Thread finished");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        /*if(threads.size()>=1){
-            try {
-                threads.get(0).join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        if (restaurants == null || restaurants.isEmpty()) {
-            for (int i = 0; i < maxIndex; i += 50) {
-                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i));
-                threads.get(threads.size()-1).start();
-            }
-        }
-        if(threads.size()>=1){
-            try {
-                threads.get(0).join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
-    private void refreshListBackground(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex) {
+    private void refreshListBackground(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex, DislikeListHolder dislikeListHolder) {
         if (restaurants == null || restaurants.size() <= 10) {
             for (int i = 0; i < maxIndex; i += 50) {
-                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch));
+                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder));
                 threads.get(threads.size() - 1).start();
             }
         }
