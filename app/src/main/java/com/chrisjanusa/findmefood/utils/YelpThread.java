@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class YelpThread extends Thread {
     CountDownLatch latch;
+    CountDownLatch errorLatch;
     String lat;
     String lon;
     String input;
@@ -18,7 +19,7 @@ public class YelpThread extends Thread {
     DislikeListHolder dislikeListHolder;
 
     public YelpThread(String lat, String lon, String input,
-                      String filter, int whichAsyncTask, int offset, CountDownLatch latch, DislikeListHolder dislikeListHolder) {
+                      String filter, int whichAsyncTask, int offset, CountDownLatch latch, DislikeListHolder dislikeListHolder, CountDownLatch errorLatch) {
         this.lat = lat;
         this.lon = lon;
         this.input = input;
@@ -27,10 +28,19 @@ public class YelpThread extends Thread {
         this.offset = offset;
         this.latch = latch;
         this.dislikeListHolder = dislikeListHolder;
+        this.errorLatch = errorLatch;
     }
 
     public void run() {
-        MainActivityFragment.queryYelp(lat, lon, input, filter, offset, whichAsyncTask, this, latch, dislikeListHolder);
+        if(MainActivityFragment.queryYelp(lat, lon, input, filter, offset, whichAsyncTask, this, dislikeListHolder)){
+            latch.countDown();
+        }
+        else{
+            errorLatch.countDown();
+            if(errorLatch.getCount()==0){
+                latch.countDown();
+            }
+        }
     }
 
 }

@@ -110,6 +110,8 @@ public class MainActivityFragment extends Fragment implements
     static CheckBox priceThree;
     static CheckBox priceTwo;
     CountDownLatch latch = new CountDownLatch(0);
+    CountDownLatch errorLatch = new CountDownLatch(0);
+
 
     CircularProgressBar progressBar;
     EditText filterBox;
@@ -701,7 +703,7 @@ public class MainActivityFragment extends Fragment implements
      * @return true if successful querying Yelp; false otherwise.
      */
     public static boolean queryYelp(String lat, String lon, String input,
-                              String filter, int offset, int whichAsyncTask, YelpThread thread, CountDownLatch latch, DislikeListHolder dislikeListHolder) {
+                              String filter, int offset, int whichAsyncTask, YelpThread thread, DislikeListHolder dislikeListHolder) {
 
         // Build Yelp request.
         try {
@@ -750,6 +752,7 @@ public class MainActivityFragment extends Fragment implements
             }
 
             requestUrl = builder.toString();
+            Log.d("Running Yelp", "URL: " + requestUrl);
 
             url = new URL(requestUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -778,7 +781,6 @@ public class MainActivityFragment extends Fragment implements
             // This occurs if a network communication error occurs or if no restaurants were found.
             if (length <= 0) {
                 errorInQuery = TypeOfError.NO_RESTAURANTS;
-                latch.countDown();
                 Log.d("Running Yelp", "Latch decremented: Communication error");
                 threads.remove(thread);
                 return false;
@@ -795,7 +797,6 @@ public class MainActivityFragment extends Fragment implements
 
             if (restaurants.isEmpty()) {
                 errorInQuery = TypeOfError.NO_RESTAURANTS;
-                latch.countDown();
                 Log.d("Running Yelp", "Latch decremented: No Valid Restaurants");
                 threads.remove(thread);
                 return false;
@@ -807,28 +808,24 @@ public class MainActivityFragment extends Fragment implements
             else if (e.getMessage().contains("No value for"))
                 errorInQuery = TypeOfError.MISSING_INFO;
             e.printStackTrace();
-            latch.countDown();
             Log.d("Running Yelp", "Latch decremented: Error in query");
             threads.remove(thread);
             return false;
         } catch (FileNotFoundException e) {
             errorInQuery = TypeOfError.INVALID_LOCATION;
             e.printStackTrace();
-            latch.countDown();
             Log.d("Running Yelp", "Latch decremented: invalid location");
             threads.remove(thread);
             return false;
         } catch (Exception e) {
             if (e.getMessage().contains("timed out")) errorInQuery = TypeOfError.TIMED_OUT;
             e.printStackTrace();
-            latch.countDown();
             Log.d("Running Yelp", "Latch decremented: timeout");
             threads.remove(thread);
             return false;
         }
 
         errorInQuery = TypeOfError.NO_ERROR;
-        latch.countDown();
         Log.d("Running Yelp", "Latch decremented: all good - #restaurants " +restaurants.size());
         threads.remove(thread);
         return true;
@@ -1149,6 +1146,7 @@ public class MainActivityFragment extends Fragment implements
 
     private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex, DislikeListHolder dislikeListHolder){
         latch = new CountDownLatch(1);
+        errorLatch = new CountDownLatch(9);
         Log.d("Running Yelp", "Countdown latch set");
         if (restaurants == null || restaurants.size()<=10) {
             if(!threads.isEmpty() && (restaurants.isEmpty() || restaurants == null)){
@@ -1167,7 +1165,7 @@ public class MainActivityFragment extends Fragment implements
             if (restaurants == null || restaurants.size()<=10) {
                 Log.d("Running Yelp", "Still no restaurants so starting all threads");
                 for (int i = 0; i < maxIndex; i += 50) {
-                    threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder));
+                    threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder, errorLatch));
                     threads.get(threads.size()-1).start();
                 }
                 if((restaurants.isEmpty() || restaurants == null)){
@@ -1186,7 +1184,7 @@ public class MainActivityFragment extends Fragment implements
     private void refreshListBackground(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex, DislikeListHolder dislikeListHolder) {
         if (restaurants == null || restaurants.size() <= 10) {
             for (int i = 0; i < maxIndex; i += 50) {
-                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder));
+                threads.add(new YelpThread(lat, lon, userInputStr, userFilterStr, 0, i, latch, dislikeListHolder, errorLatch));
                 threads.get(threads.size() - 1).start();
             }
         }
