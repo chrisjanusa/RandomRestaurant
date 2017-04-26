@@ -124,6 +124,13 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
         Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
     }
 
+    public void remove(Restaurant res) {
+        Restaurant deleteThis = res;
+        new DeleteFromHistoryDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
+        notifyItemRemoved(historyListHolder.remove(deleteThis));
+        Toast.makeText(context, "Restaurant removed from history", Toast.LENGTH_SHORT).show();
+    }
+
     public void remove(int index) {
         Restaurant deleteThis = historyListHolder.get(index);
         new DeleteFromHistoryDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
@@ -132,15 +139,15 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
     }
 
 
-    public void removeDislike(int index) {
-        Restaurant deleteThis = historyListHolder.get(index);
+    public void removeDislike(Restaurant res) {
+        Restaurant deleteThis = res;
         new DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
         dislikeListHolder.remove(deleteThis);
         Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
     }
 
-    public void removeSaved(int index) {
-        Restaurant deleteThis = historyListHolder.get(index);
+    public void removeSaved(Restaurant res) {
+        Restaurant deleteThis = res;
         new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
         savedListHolder.remove(deleteThis);
         Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
@@ -252,7 +259,7 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
             @Override
             public void onClick(View v) {
                 if (savedListHolder.resIsContained(restaurant)) {
-                    removeSaved(position);
+                    removeSaved(restaurant);
                     holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
                     return;
                 }
@@ -266,7 +273,7 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
             @Override
             public void onClick(View v) {
                 if (dislikeListHolder.resIsContained(restaurant)) {
-                    removeDislike(position);
+                    removeDislike(restaurant);
                     holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
                     return;
                 }

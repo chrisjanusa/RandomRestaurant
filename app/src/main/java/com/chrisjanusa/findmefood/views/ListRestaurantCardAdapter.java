@@ -108,6 +108,13 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
         builder.create();
         builder.show();
     }
+    public void remove(Restaurant res) {
+        Restaurant deleteThis = res;
+        new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
+        notifyItemRemoved(savedListHolder.remove(deleteThis));
+        Toast.makeText(context, "Restaurant removed from like list", Toast.LENGTH_SHORT).show();
+    }
+
     public void remove(int index) {
         Restaurant deleteThis = savedListHolder.get(index);
         new DeleteFromDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
@@ -124,6 +131,13 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
         new InsertIntoDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, res);
         dislikeListHolder.add(res);
         Toast.makeText(context, "Restaurant added to dislike list", Toast.LENGTH_SHORT).show();
+    }
+
+    public void removeDislike(Restaurant res) {
+        Restaurant deleteThis = res;
+        new DeleteFromDislikeDB().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deleteThis);
+        dislikeListHolder.remove(deleteThis);
+        Toast.makeText(context, "Restaurant removed from dislike list", Toast.LENGTH_SHORT).show();
     }
 
     public void removeDislike(int index) {
@@ -239,7 +253,7 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
             @Override
             public void onClick(View v) {
                 if (savedListHolder.resIsContained(restaurant)) {
-                    remove(position);
+                    remove(restaurant);
                     holder.saveButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_not));
                     return;
                 }
@@ -253,7 +267,7 @@ public class ListRestaurantCardAdapter extends RecyclerView.Adapter<ListRestaura
             @Override
             public void onClick(View v) {
                 if (dislikeListHolder.resIsContained(restaurant)) {
-                    removeDislike(position);
+                    removeDislike(restaurant);
                     holder.removeButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.block_not));
                     return;
                 }
