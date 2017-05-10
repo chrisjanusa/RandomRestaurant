@@ -33,8 +33,7 @@
                 android:paddingBottom="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/black"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilUserFilter"
@@ -67,8 +66,7 @@
                 android:paddingTop="@dimen/_2sdp"
                 android:text="Price Range"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary" />
+                android:textColor="@color/black" />
 
 
 
@@ -119,8 +117,7 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Minimum Rating"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/black"/>
 
             <RatingBar
                 android:id="@+id/rating"
@@ -140,8 +137,8 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Closes After"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/black"
+                />
 
 
             <ToggleButton
@@ -163,8 +160,7 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:text="Max distance"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/black"/>
 
             <EditText
                 android:id="@+id/milesBox"
@@ -189,8 +185,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="Search Type"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#ffffff"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/black"/>
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"

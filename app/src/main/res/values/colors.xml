@@ -2,12 +2,12 @@
 <resources>
     <color name="colorPrimary">#bb2f2f</color>
     <color name="colorPrimaryDark">#bb2f2f</color>
-    <color name="colorAccent">#00A6ED</color>
+    <color name="colorAccent">#d71616</color>
     <color name="black">#000000</color>
 
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
-    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_3">#d71616</color>
     <color name="gplus_color_4">#bb2f2f</color>
 
     <integer-array name="gplus_colors">

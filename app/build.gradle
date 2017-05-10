@@ -47,7 +47,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
     compile 'org.sufficientlysecure:html-textview:3.0'
-    compile 'com.github.arimorty:floatingsearchview:2.0.3'
+    compile 'com.github.arimorty:floatingsearchview:2.0.4'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.1.0'
     compile 'pub.devrel:easypermissions:0.2.1'
 }
