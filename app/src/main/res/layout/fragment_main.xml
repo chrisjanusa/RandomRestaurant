@@ -34,7 +34,7 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3"/>
+                android:background="@color/colorPrimary"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilUserFilter"
@@ -68,7 +68,7 @@
                 android:text="Price Range"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3" />
+                android:background="@color/colorPrimary" />
 
 
 
@@ -120,12 +120,12 @@
                 android:text="Minimum Rating"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3"/>
+                android:background="@color/colorPrimary"/>
 
             <RatingBar
                 android:id="@+id/rating"
                 android:layout_gravity="center"
-                android:colorControlNormal="#1fb2a3"
+                android:colorControlNormal="@color/colorPrimary"
                 android:rating="1"
                 android:stepSize="0.5"
                 android:numStars="5"
@@ -141,7 +141,7 @@
                 android:text="Closes After"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3"/>
+                android:background="@color/colorPrimary"/>
 
 
             <ToggleButton
@@ -164,7 +164,7 @@
                 android:text="Max distance"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3"/>
+                android:background="@color/colorPrimary"/>
 
             <EditText
                 android:id="@+id/milesBox"
@@ -190,7 +190,7 @@
                 android:text="Search Type"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#ffffff"
-                android:background="#1fb2a3"/>
+                android:background="@color/colorPrimary"/>
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
@@ -261,7 +261,7 @@
         android:text="Pick Restaurant"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/_16sdp"
-        android:background="#1fb2a3"/>
+        android:background="@color/colorPrimary"/>
 
 
 

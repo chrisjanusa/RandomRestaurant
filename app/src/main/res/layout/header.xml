@@ -7,10 +7,11 @@
 
     <ImageView
         android:id="@+id/img_first"
+        android:paddingTop="@dimen/_15sdp"
         android:layout_width="fill_parent"
         android:layout_height="170dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/icon"
+        android:scaleType="centerInside"
+        android:src="@drawable/just_logo"
         android:paddingBottom="@dimen/_5sdp"/>
 
 </RelativeLayout>

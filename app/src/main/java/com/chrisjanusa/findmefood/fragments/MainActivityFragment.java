@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
@@ -180,7 +181,7 @@ public class MainActivityFragment extends Fragment implements
         generate = (Button) rootLayout.findViewById(R.id.generate);
 
         radioGroup = (RadioGroup) rootLayout.findViewById(R.id.radioGroup);
-        generateBtnColor = Color.parseColor("#1fb2a3");
+        generateBtnColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
 
         // Yelp API access token
         accessToken = BuildConfig.API_ACCESS_TOKEN;
