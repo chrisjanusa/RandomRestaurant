@@ -610,7 +610,7 @@ public class MainActivityFragment extends Fragment implements
         return new MaterialShowcaseView.Builder(getActivity())
                 .setTarget(target)
                 .setShape(shape)
-                .setMaskColour(Color.parseColor("#1A6C9D"))
+                .setMaskColour(ContextCompat.getColor(getContext(), R.color.colorAccent))
                 .setContentText(contentText)
                 .setDismissText("GOT IT")
                 .build();
@@ -744,7 +744,9 @@ public class MainActivityFragment extends Fragment implements
 
             if (openAtTimeFilter != 0)
                 builder.append("&open_at=").append(openAtTimeFilter);
-
+            else{
+                builder.append("&open_now=").append("true");
+            }
             if (LocationProviderHelper.useGPS) {
                 builder.append("&latitude=").append(lat);
                 builder.append("&longitude=").append(lon);

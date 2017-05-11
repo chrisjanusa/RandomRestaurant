@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#bb2f2f</color>
     <color name="colorAccent">#d71616</color>
     <color name="black">#000000</color>
+    <color name="sideNavBackground">#212121</color>
+    <color name="sideNavText">#FAFAFA</color>
 
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>

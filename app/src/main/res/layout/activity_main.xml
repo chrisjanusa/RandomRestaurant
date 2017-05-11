@@ -66,7 +66,9 @@
         android:paddingTop="25px"
         android:id="@+id/navList"
         android:layout_gravity="left|start"
-        android:background="#ffeeeeee">
+        android:divider="@color/sideNavText"
+        android:dividerHeight="0.1dp"
+        android:background="@color/sideNavBackground">
 
     </ListView>
 

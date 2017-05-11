@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="filters_padding_bottom">12dp</dimen>
+    <dimen name="filters_padding_bottom_between">9dp</dimen>
+    <dimen name="checkbox_spacing">30dp</dimen>
+    <dimen name="menu_spacing">12dp</dimen>
 </resources>
