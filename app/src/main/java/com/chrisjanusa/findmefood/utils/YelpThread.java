@@ -37,9 +37,12 @@ public class YelpThread extends Thread {
         }
         else{
             errorLatch.countDown();
-            if(errorLatch.getCount()==0){
-                latch.countDown();
+            try {
+                errorLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            latch.countDown();
         }
     }
 

@@ -713,7 +713,7 @@ public class MainActivityFragment extends Fragment implements
             String requestUrl = "https://api.yelp.com/v3/businesses/search";
             StringBuilder builder = new StringBuilder(requestUrl);
 
-            builder.append("?term=").append("food");
+            builder.append("?term=").append("restaurants");
             builder.append("&limit=" + 50);
             builder.append("&offset=").append(offset);
 
@@ -780,11 +780,12 @@ public class MainActivityFragment extends Fragment implements
             // Get JSON array that holds the listings from Yelp.
             JSONArray jsonBusinessesArray = response.getJSONArray("businesses");
             int length = jsonBusinessesArray.length();
+            Log.d("Running Yelp", "Yelp Array length for offset " + offset + " is " + length);
 
             // This occurs if a network communication error occurs or if no restaurants were found.
             if (length <= 0) {
                 errorInQuery = TypeOfError.NO_RESTAURANTS;
-                Log.d("Running Yelp", "Latch decremented: Communication error");
+                Log.d("Running Yelp", "Latch decremented: Communication error for offset " + offset);
                 threads.remove(thread);
                 return false;
             }
@@ -794,6 +795,7 @@ public class MainActivityFragment extends Fragment implements
                     break;
 
                 Restaurant res = convertJSONToRestaurant(jsonBusinessesArray.getJSONObject(i));
+                Log.d("Running Yelp", "Checking " + res.getName());
                 if (res != null && isValidRestaurant(res, dislikeListHolder))
                     restaurants.add(res);
             }
@@ -1142,19 +1144,27 @@ public class MainActivityFragment extends Fragment implements
 
     private static boolean isValidRestaurant(Restaurant chosenRestaurant, DislikeListHolder dislikeListHolder){
         boolean tooFar = chosenRestaurant.getDistance() > maxDistance;
+        if(tooFar){
+            Log.d("Checking Yelp", chosenRestaurant.getDistance() + " is farther than max distance of " + maxDistance);
+        }
         boolean blocked = dislikeListHolder.resIsContained(chosenRestaurant);
+        if(blocked){
+            Log.d("Checking Yelp", chosenRestaurant + " is on the blocked list");
+        }
         boolean tooBad = chosenRestaurant.getRating() < ratingNum;
+        if(tooBad){
+            Log.d("Checking Yelp", chosenRestaurant.getRating() + " is less than min rating of " + ratingNum);
+        }
         return !(tooBad||tooFar||blocked);
     }
 
     private void refreshList(String lat, String lon, String userInputStr, String userFilterStr, int maxIndex, DislikeListHolder dislikeListHolder){
         latch = new CountDownLatch(1);
-        errorLatch = new CountDownLatch(9);
+        errorLatch = new CountDownLatch(10);
         Log.d("Running Yelp", "Countdown latch set");
         if (restaurants == null || restaurants.size()<=10) {
             if(!threads.isEmpty() && (restaurants.isEmpty() || restaurants == null)){
                 try {
-                    Log.d("Running Yelp", "Thread exists so awaiting thread");
                     latch.await();
                     Log.d("Running Yelp", "Thread finished");
                 } catch (InterruptedException e) {
@@ -1175,6 +1185,9 @@ public class MainActivityFragment extends Fragment implements
                     try {
                         Log.d("Running Yelp", "Awaiting new threads");
                         latch.await();
+                        for(int i = 10; i>=0; i--) {
+                            errorLatch.countDown();
+                        }
                         Log.d("Running Yelp", "Thread finished");
                     } catch (InterruptedException e) {
                         e.printStackTrace();

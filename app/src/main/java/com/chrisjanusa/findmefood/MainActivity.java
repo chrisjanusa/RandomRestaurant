@@ -13,13 +13,16 @@ import android.widget.ListView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.chrisjanusa.findmefood.fragments.MainActivityFragment;
+import com.chrisjanusa.findmefood.utils.Item;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
     private FloatingSearchView searchLocationBox;
+    private ArrayList<Item> itemList =new ArrayList<>();
 
 
     @Override
@@ -39,9 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void addDrawerItems(){
 
-        String[] thing = {"Favorites","Blocked","History"};
-        mAdapter = new ArrayAdapter<String>(this, R.layout.menu_text, thing);
-
+        //String[] thing = {"Favorites","Blocked","History"};
+        //mAdapter = new ArrayAdapter<String>(this, R.layout.menu_text, thing);
+        itemList.add(new Item("Favorites",R.drawable.star_filled));
+        itemList.add(new Item("Blocked",R.drawable.block_red));
+        itemList.add(new Item("History",R.drawable.ic_history_black_24dp));
+        com.chrisjanusa.findmefood.MyAdapter mAdapter= new com.chrisjanusa.findmefood.MyAdapter(this,R.layout.menu_text_image, itemList);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
