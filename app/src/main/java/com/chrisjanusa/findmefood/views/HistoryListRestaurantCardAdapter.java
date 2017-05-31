@@ -213,8 +213,8 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
         String distanceText = String.format(Locale.ENGLISH, "%.2f mi away", restaurant.getDistance());
 
         // Color coding dollar signs for price and number of reviews.
-        Spannable spannable = new SpannableString(String.format(Locale.ENGLISH, "%s | %s | %s",
-                priceText, reviewsText, distanceText));
+        Spannable spannable = new SpannableString(String.format(Locale.ENGLISH, "%s | %s",
+                priceText, reviewsText));
 
         int startIndex = 0;
         int endIndex = priceText.length();
@@ -238,11 +238,11 @@ public class HistoryListRestaurantCardAdapter extends RecyclerView.Adapter<Histo
                 (reviewsText.length() - String.valueOf(restaurant.getReviewCount()).length());
         endIndex = startIndex + (distanceText.length() - " mi away".length());
 
-        // Distance (miles away)
+        /* Distance (miles away)
         spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#FF764A")),
                 startIndex,
                 endIndex,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
 
         holder.distancePriceReviewCount.setText(spannable);
 
