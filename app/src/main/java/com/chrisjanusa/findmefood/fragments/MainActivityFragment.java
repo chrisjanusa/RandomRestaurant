@@ -282,7 +282,7 @@ public class MainActivityFragment extends Fragment implements
                         showFilterElements();
 
                         // Show tutorial about entering multiple filters.
-                        displayShowcaseViewFilterBox();
+                        //displayShowcaseViewFilterBox();
                     } else if (filtersLayout.getVisibility() == View.VISIBLE) {
                         showNormalLayout();
                     }
@@ -453,7 +453,7 @@ public class MainActivityFragment extends Fragment implements
 
 
         // A tutorial that displays only once explaining the input to the app.
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "MAIN");
+        /*MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "MAIN");
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(250);
         sequence.setConfig(config);
@@ -464,7 +464,7 @@ public class MainActivityFragment extends Fragment implements
                         "Tap the filter icon to see the filter options."
         ));
 
-        sequence.start();
+        sequence.start();*/
     }
 
     @Override
@@ -606,7 +606,7 @@ public class MainActivityFragment extends Fragment implements
      * @param shape:       the type of shape.
      * @param contentText: the text to be displayed.
      */
-    private MaterialShowcaseView buildShowcaseView(View target, uk.co.deanwild.materialshowcaseview.shape.Shape shape, String contentText) {
+    /*private MaterialShowcaseView buildShowcaseView(View target, uk.co.deanwild.materialshowcaseview.shape.Shape shape, String contentText) {
         return new MaterialShowcaseView.Builder(getActivity())
                 .setTarget(target)
                 .setShape(shape)
@@ -614,7 +614,7 @@ public class MainActivityFragment extends Fragment implements
                 .setContentText(contentText)
                 .setDismissText("GOT IT")
                 .build();
-    }
+    }*/
 
     /**
      * Function to disable the generate button.
@@ -644,7 +644,7 @@ public class MainActivityFragment extends Fragment implements
     /**
      * Function to display the MaterialShowcaseView for filterBox.
      */
-    private void displayShowcaseViewFilterBox() {
+    /*private void displayShowcaseViewFilterBox() {
         MaterialShowcaseSequence filterShowcase = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "FILTER");
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(250);
@@ -655,7 +655,7 @@ public class MainActivityFragment extends Fragment implements
         ));
 
         filterShowcase.start();
-    }
+    }*/
 
     private void showFilterElements() {
         filtersLayout.setVisibility(View.VISIBLE);
@@ -1130,7 +1130,7 @@ public class MainActivityFragment extends Fragment implements
             enableGenerateButton();
 
             // A tutorial that displays only once explaining the action that can be done on the restaurant card.
-            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "CARD");
+            /*MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), BuildConfig.VERSION_NAME + "CARD");
             ShowcaseConfig config = new ShowcaseConfig();
             config.setDelay(100);
             sequence.setConfig(config);
@@ -1138,7 +1138,7 @@ public class MainActivityFragment extends Fragment implements
             sequence.addSequenceItem(buildShowcaseView(restaurantView, new RectangleShape(0, 0),
                     "Swipe left to dismiss. Swipe right to open in Yelp. Tap star to save it favorites list. Tap block button to save it to blocked list and never see it again."));
 
-            sequence.start();
+            sequence.start();*/
         }
     }
 
