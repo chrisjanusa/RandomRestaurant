@@ -14,9 +14,9 @@ Features:
  - Filter by time restaurants are open at so you don't get one that is closed when you get there. 
  - Ability to use your GPS for places near you or enter a location manually to search a specific area.
  - Save restaurants to access them later if you want to narrow down your choices.
- - Ability to open the restaurant's page in Yelp for more information.
+ - Ability to open the restaurant's page in Yelp, Uber or Google Maps for more information.
  - Displays a mini Google Maps to show where the restaurant is and to get quick directions to it.
- - Ability to ban restaurants fom showing up.
+ - Ability to ban restaurants from showing up.
  - Ability to save restaurants to a favorites list
  - History List just in case you change your mind after passing on a restaurant 
  
