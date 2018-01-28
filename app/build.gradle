@@ -15,13 +15,16 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            useProguard true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // http://programmers.stackexchange.com/a/285309
             buildConfigField("String", "API_ACCESS_TOKEN", "\"" + TOKEN+ "\"")
         }
         debug {
-            minifyEnabled true
+            useProguard true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField("String", "API_ACCESS_TOKEN", "\"" + TOKEN + "\"")

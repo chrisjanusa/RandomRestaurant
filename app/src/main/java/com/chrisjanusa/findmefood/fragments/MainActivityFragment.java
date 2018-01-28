@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +44,7 @@ import android.widget.ToggleButton;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.chrisjanusa.findmefood.BuildConfig;
+import com.chrisjanusa.findmefood.MainActivity;
 import com.chrisjanusa.findmefood.Manifest;
 import com.chrisjanusa.findmefood.R;
 import com.chrisjanusa.findmefood.db.HistoryDBHelper;
@@ -58,6 +60,7 @@ import com.chrisjanusa.findmefood.db.DislikeRestaurantDBHelper;
 import com.chrisjanusa.findmefood.utils.DislikeListHolder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,6 +68,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +94,9 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import uk.co.deanwild.materialshowcaseview.shape.RectangleShape;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * A fragment containing the main activity.
@@ -124,7 +131,6 @@ public class MainActivityFragment extends Fragment implements
     ScrollView filtersLayout;
     LinearLayout mapCardContainer;
     LinearLayout priceFilterLayout;
-    LocationProviderHelper locationHelper;
     static long openAtTimeFilter = 0;
     MainRestaurantCardAdapter mainRestaurantCardAdapter;
     MapView mapView;
@@ -145,7 +151,16 @@ public class MainActivityFragment extends Fragment implements
     static double ratingNum;
     boolean showError;
     static ArrayList<YelpThread> threads = new ArrayList<>();
+     private FusedLocationProviderClient mFusedLocationClient;
+     Location location;
+    static Boolean useGPS=true;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -221,12 +236,7 @@ public class MainActivityFragment extends Fragment implements
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
-                if(checkedId == R.id.radioFav){
-                    favBool = true;
-                }
-                else {
-                    favBool = false;
-                }
+                favBool = checkedId == R.id.radioFav;
             }
         });
 
@@ -249,8 +259,6 @@ public class MainActivityFragment extends Fragment implements
         searchLocationBox = (FloatingSearchView) getActivity().findViewById(R.id.searchBox);
 
         // Create LocationProviderHelper instance.
-        locationHelper = new LocationProviderHelper(getActivity(), searchLocationBox,
-                mGoogleApiClient);
 
         // Get Google Map using OnMapReadyCallback
         mapView.getMapAsync(this);
@@ -275,7 +283,9 @@ public class MainActivityFragment extends Fragment implements
                 restartQuery = true;
 
                 if (id == R.id.search_box_gps) {
-                    locationHelper.requestLocation();
+                    useGPS=true;
+                    searchLocationBox.setSearchText("Current Location");
+                    requestLocation();
                 }
                 else if (id == R.id.search_box_filter) {
                     if (filtersLayout.getVisibility() == View.GONE) {
@@ -362,7 +372,7 @@ public class MainActivityFragment extends Fragment implements
                  * Else set restartQuery to true if the queries have changed.
                  */
                 if(!located) {
-                    locationHelper.requestLocation();
+                    requestLocation();
                     located = true;
                 }
                 if (searchQuery.isEmpty() && filterQuery.isEmpty()) {
@@ -376,15 +386,14 @@ public class MainActivityFragment extends Fragment implements
                     filterQuery = filterBox.getText().toString();
 
                     // We want to use GPS if searchQuery contains the string "Current Location".
-                    LocationProviderHelper.useGPS = searchQuery.contains(getActivity()
-                            .getString(R.string.string_current_location));
+                    useGPS = searchQuery.contains(getActivity().getString(R.string.string_current_location));
                 }
 
                 // Replace all spaces from filters for Yelp query.
                 String filterBoxText = filterBox.getText().toString().replaceAll(" ", "");
 
 
-                if (LocationProviderHelper.useGPS) {
+                if (useGPS) {
                     /**
                      * Check to make sure the location is not null before starting.
                      * Else, begin the AsyncTask.
@@ -405,11 +414,11 @@ public class MainActivityFragment extends Fragment implements
                     if(maxDistance!=prevDist){
                         restartQuery=true;
                     }
-                    Location location = locationHelper.getLocation();
+
 
                     if (location == null) {
                         if(showError) {
-                            displayAlertDialog(R.string.string_location_not_found, "Error");
+                            Snackbar.make(getView(),"Location Error: Check Location Settings", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         initialYelpQuery = new RunYelpQuery(
@@ -467,6 +476,33 @@ public class MainActivityFragment extends Fragment implements
         sequence.start();*/
     }
 
+    private void requestLocation() {
+        if(EasyPermissions.hasPermissions(getActivity(),ACCESS_COARSE_LOCATION)) {
+            try {
+                mFusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location newLocation) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (newLocation != null) {
+                                    location = newLocation;
+                                    Log.d("location",location.toString());
+                                } else {
+                                    Snackbar.make(getView(),"Location Error: Check Location Settings", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            } catch (SecurityException e) {
+                Snackbar.make(getView(),"Location Error: Check Location Settings", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            EasyPermissions.requestPermissions(getActivity(),"Location permission are required to use GPS",120,ACCESS_COARSE_LOCATION);
+            if(EasyPermissions.hasPermissions(getActivity(),ACCESS_COARSE_LOCATION)) {
+                requestLocation();
+            }
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // https://code.google.com/p/gmaps-api-issues/issues/detail?id=6237#c9
@@ -498,7 +534,6 @@ public class MainActivityFragment extends Fragment implements
             }
         }
 
-        locationHelper.pauseAndSaveLocationUpdates();
     }
 
     @Override
@@ -538,39 +573,14 @@ public class MainActivityFragment extends Fragment implements
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
-        locationHelper.onPermissionsGranted(requestCode, perms);
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        locationHelper.onPermissionsDenied(requestCode, perms);
     }
 
     // Callback for checking location settings.
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case LocationProviderHelper.REQUEST_CHECK_SETTINGS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK: {
-                        // All required changes were successfully made
-                        locationHelper.requestLocation();
-                        break;
-                    }
-                    case Activity.RESULT_CANCELED: {
-                        // The user was asked to change settings, but chose not to
-                        locationHelper.dismissLocationUpdater();
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                break;
-        }
-    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -747,7 +757,7 @@ public class MainActivityFragment extends Fragment implements
             else{
                 builder.append("&open_now=").append("true");
             }
-            if (LocationProviderHelper.useGPS) {
+            if (useGPS) {
                 builder.append("&latitude=").append(lat);
                 builder.append("&longitude=").append(lon);
             } else {
